@@ -54,3 +54,16 @@ jobs:
           publish_branch: gh-pages
           github_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./client/greenlight-front/build
+          workdir: ./client/greenlight-front/build
+          clean: true
+          commit_message: Deploy to GitHub Pages
+          user_name: "elioglima"
+          user_email: elio.designer@hotmail.com
+          enable_jekyll: false
+          keep_files: false
+          cache_enable: false
+          skip_cleanup: true
+          silent: true
+          extra_files: |
+            static
+            manifest.json
