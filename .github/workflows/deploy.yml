@@ -48,4 +48,6 @@ jobs:
       - name: Deploy React
         working-directory: client/greenlight-front/
         run: |
+          git config --global user.email "elio.hotmail@hotmail.com"
+          git config --global user.name "elioglima"
           yarn deploy
