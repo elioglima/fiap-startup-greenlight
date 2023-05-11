@@ -42,7 +42,11 @@ jobs:
 
       - name: Build da App
         working-directory: client/greenlight-front/
-        run: yarn build
+        run: |
+          yarn build
+          ls -a
+          cd build
+          ls -a
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
