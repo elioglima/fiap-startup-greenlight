@@ -51,10 +51,11 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
+          base_url: https://elioglima.github.io/fiap-startup-greenlight/
           publish_branch: gh-pages
           github_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./client/greenlight-front/build
-          destination_dir: ./github-page
+          destination_dir: ./client/greenlight-front/build
           commit_message: Deploy to GitHub Pages
           user_name: "elioglima"
           user_email: elio.designer@hotmail.com
