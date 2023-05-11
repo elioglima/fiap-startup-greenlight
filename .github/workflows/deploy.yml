@@ -55,7 +55,6 @@ jobs:
       - name: Deploy 2 to GitHub Pages
         uses: bitovi/github-actions-react-to-ghp@v1.2.0
         with:
-          working-directory: client/greenlight-front/
-          build_directory: ./build
+          path: ./client/greenlight-front/build
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
