@@ -51,12 +51,3 @@ jobs:
           personal_token: ${{ secrets.ACCESS_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./client/greenlight-front/build
-
-      - name: Deploy 2 to GitHub Pages
-        uses: bitovi/github-actions-react-to-ghp@v1.2.0
-        with:
-          path: ./client/greenlight-front/build
-          build_directory: ./client/greenlight-front/build
-          domain: elioglima.github.io/fiap-startup-greenlight
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
