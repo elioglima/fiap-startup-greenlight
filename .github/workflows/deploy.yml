@@ -45,9 +45,9 @@ jobs:
         run: |
           yarn build
 
-      - name: Deploy React
-        working-directory: client/greenlight-front/
-        run: |
-          git config --global user.email "elio.hotmail@hotmail.com"
-          git config --global user.name "elioglima"
-          yarn deploy
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./client/greenlight-front/build
