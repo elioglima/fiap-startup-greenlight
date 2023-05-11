@@ -55,15 +55,12 @@ jobs:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./client/greenlight-front/build
           destination_dir: ./github-page
-          clean: true
           commit_message: Deploy to GitHub Pages
           user_name: "elioglima"
           user_email: elio.designer@hotmail.com
           enable_jekyll: false
+          disable_nojekyll: true
           keep_files: false
-          cache_enable: false
-          skip_cleanup: true
-          silent: true
           extra_files: |
             static
             manifest.json
