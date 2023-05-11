@@ -1,7 +1,7 @@
 {
   "name": "greenlight-front",
   "version": "0.1.0",
-  "homepage": "github-page/",
+  "homepage": "https://elioglima.github.io/fiap-startup-greenlight/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
