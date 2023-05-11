@@ -54,10 +54,7 @@ jobs:
           publish_branch: gh-pages
           github_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./client/greenlight-front/build
-          destination_dir: https://elioglima.github.io/fiap-startup-greenlight/
           commit_message: Deploy to GitHub Pages
-          user_name: "elioglima"
-          user_email: elio.designer@hotmail.com
           enable_jekyll: false
           disable_nojekyll: true
           keep_files: false
