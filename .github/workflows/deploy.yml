@@ -55,6 +55,7 @@ jobs:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./client/greenlight-front/build
           workdir: ./client/greenlight-front/build
+          base_dir: ./github-page
           clean: true
           commit_message: Deploy to GitHub Pages
           user_name: "elioglima"
