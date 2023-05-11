@@ -51,11 +51,10 @@ jobs:
           personal_token: ${{ secrets.ACCESS_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./client/greenlight-front/build
-          keep_files: index.html
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy 2 to GitHub Pages
         uses: bitovi/github-actions-react-to-ghp@v1.2.0
         with:
           build_directory: ./client/greenlight-front/build
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
