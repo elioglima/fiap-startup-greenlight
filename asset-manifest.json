@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/fiap-startup-greenlight/static/css/main.56875521.css",
-    "main.js": "/fiap-startup-greenlight/static/js/main.ff0a9cd8.js",
+    "main.js": "/fiap-startup-greenlight/static/js/main.adf0f209.js",
     "static/js/787.25b0ba2d.chunk.js": "/fiap-startup-greenlight/static/js/787.25b0ba2d.chunk.js",
     "index.html": "/fiap-startup-greenlight/index.html",
     "main.56875521.css.map": "/fiap-startup-greenlight/static/css/main.56875521.css.map",
-    "main.ff0a9cd8.js.map": "/fiap-startup-greenlight/static/js/main.ff0a9cd8.js.map",
+    "main.adf0f209.js.map": "/fiap-startup-greenlight/static/js/main.adf0f209.js.map",
     "787.25b0ba2d.chunk.js.map": "/fiap-startup-greenlight/static/js/787.25b0ba2d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.56875521.css",
-    "static/js/main.ff0a9cd8.js"
+    "static/js/main.adf0f209.js"
   ]
 }
