@@ -1,4 +1,4 @@
-name: Deploy startupone-greenlight
+name: Deploy fiap-startup-greenlightds
 
 on:
   push:
