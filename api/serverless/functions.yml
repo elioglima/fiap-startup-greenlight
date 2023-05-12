@@ -1,91 +1,118 @@
 loginUser:
-    handler: src/lambda/user.login
-    events:
-        - http:
-            path: /usuario/acesso
-            method: POST
-            
+  handler: src/lambda/user.login
+  events:
+    - http:
+        path: /usuario/acesso
+        method: POST
+
 findUser:
-    handler: src/lambda/user.find
-    events:
-        - http:
-            path: /usuario
-            method: GET
+  handler: src/lambda/user.find
+  events:
+    - http:
+        path: /usuario
+        method: GET
 
 insertUser:
-    handler: src/lambda/user.insert
-    events:
-        - http:
-            path: /usuario
-            method: PUT
+  handler: src/lambda/user.insert
+  events:
+    - http:
+        path: /usuario
+        method: PUT
 
 updateUser:
-    handler: src/lambda/user.update
-    events:
-        - http:
-            path: /usuario
-            method: POST
+  handler: src/lambda/user.update
+  events:
+    - http:
+        path: /usuario
+        method: POST
 
 removeUser:
-    handler: src/lambda/user.remove
-    events:
-        - http:
-            path: /usuario
-            method: DELETE
+  handler: src/lambda/user.remove
+  events:
+    - http:
+        path: /usuario
+        method: DELETE
 
 findEvent:
-    handler: src/lambda/event.find
-    events:
-        - http:
-            path: /evento
-            method: GET
+  handler: src/lambda/event.find
+  events:
+    - http:
+        path: /evento
+        method: GET
 
 insertEvent:
-    handler: src/lambda/event.insert
-    events:
-        - http:
-            path: /evento
-            method: PUT
+  handler: src/lambda/event.insert
+  events:
+    - http:
+        path: /evento
+        method: PUT
 
 updateEvent:
-    handler: src/lambda/event.update
-    events:
-        - http:
-            path: /evento
-            method: POST
+  handler: src/lambda/event.update
+  events:
+    - http:
+        path: /evento
+        method: POST
 
 removeEvent:
-    handler: src/lambda/event.remove
-    events:
-        - http:
-            path: /evento
-            method: DELETE
-
+  handler: src/lambda/event.remove
+  events:
+    - http:
+        path: /evento
+        method: DELETE
 
 findEventParticipant:
-    handler: src/lambda/eventParticipant.find
-    events:
-        - http:
-            path: /evento/participante
-            method: GET
+  handler: src/lambda/eventParticipant.find
+  events:
+    - http:
+        path: /evento/participante
+        method: GET
 
 insertEventParticipant:
-    handler: src/lambda/eventParticipant.insert
-    events:
-        - http:
-            path: /evento/participante
-            method: PUT
+  handler: src/lambda/eventParticipant.insert
+  events:
+    - http:
+        path: /evento/participante
+        method: PUT
 
 updateEventParticipant:
-    handler: src/lambda/eventParticipant.update
-    events:
-        - http:
-            path: /evento/participante
-            method: POST
+  handler: src/lambda/eventParticipant.update
+  events:
+    - http:
+        path: /evento/participante
+        method: POST
 
 removeEventParticipant:
-    handler: src/lambda/eventParticipant.remove
-    events:
-        - http:
-            path: /evento/participante
-            method: DELETE
+  handler: src/lambda/eventParticipant.remove
+  events:
+    - http:
+        path: /evento/participante
+        method: DELETE
+
+findCategory:
+  handler: src/lambda/category.find
+  events:
+    - http:
+        path: /categoria
+        method: GET
+
+insertCategory:
+  handler: src/lambda/category.insert
+  events:
+    - http:
+        path: /categoria
+        method: PUT
+
+updateCategory:
+  handler: src/lambda/category.update
+  events:
+    - http:
+        path: /categoria
+        method: POST
+
+removeCategory:
+  handler: src/lambda/category.remove
+  events:
+    - http:
+        path: /categoria
+        method: DELETE

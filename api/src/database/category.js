@@ -1,19 +1,17 @@
 const utils = require("../utils");
 const ObjectId = require("mongodb").ObjectId;
 
-const collectionName = "usuario";
+const collectionName = "categoria";
 const parseValues = (values) => {
   return {
-    ...(values.nome ? { nome: values.nome } : {}),
-    ...(values.email ? { nome: values.email } : {}),
-    ...(values.senha ? { nome: values.senha } : {}),
+    ...(values.titulo ? { titulo: values.titulo } : {}),
+    ...(values.data ? { data: new Date(values.data) } : {}),
   };
 };
 
 const queryMount = (params) => ({
   ...(params.id ? { _id: new ObjectId(params?.id) } : {}),
-  ...(params.nome ? { nome: params?.nome } : {}),
-  ...(params.email ? { email: params?.email } : {}),
+  ...(params.titulo ? { titulo: params.titulo } : {}),
 });
 
 const find = async (filter, limit) => {
@@ -22,7 +20,12 @@ const find = async (filter, limit) => {
     const response = await utils.db.callBack(
       collectionName,
       async (collection) => {
-        return utils.db.find(collection, queryMount(params), { id: 1 }, limit);
+        return await utils.db.find(
+          collection,
+          queryMount(params),
+          { id: 1 },
+          limit
+        );
       }
     );
 
@@ -50,12 +53,14 @@ const findOne = async (filter) => {
 
 const update = async (filter, value) => {
   try {
-    const params = filter;
+    const params = filter || {};
     const response = await utils.db.callBack(
       collectionName,
       async (collection) => {
         return await collection.updateOne(
-          { _id: new ObjectId(params?.id) },
+          {
+            _id: new ObjectId(params?.id),
+          },
           { $set: parseValues(value) }
         );
       }
@@ -69,14 +74,15 @@ const update = async (filter, value) => {
 
 const insert = async (value) => {
   try {
+    const dataValue = parseValues(value);
+    if (!dataValue.titulo || !dataValue.data) {
+      return httpHelper.badRequest("Paramêtros inválidos");
+    }
+
     const response = await utils.db.callBack(
       collectionName,
       async (collection) => {
-        return await collection.insertOne(
-          Array.isArray(value)
-            ? value.map((m) => parseValues(m))
-            : parseValues(value)
-        );
+        return await collection.insertOne(dataValue);
       }
     );
 
@@ -91,37 +97,14 @@ const remove = async (id) => {
     if (!id) {
       return httpHelper.notFound();
     }
+
     const response = await utils.db.callBack(
       collectionName,
       async (collection) => {
         return await collection.deleteOne({ _id: new ObjectId(id) });
       }
     );
-    return utils.returnDb.success(response);
-  } catch (error) {
-    return utils.returnDb.error(error.message || error.stack);
-  }
-};
 
-const login = async (email, senha) => {
-  try {
-    if (!email || !senha) {
-      return utils.returnDb.notAuthorized(response);
-    }
-
-    const response = await utils.db.callBack(
-      collectionName,
-      async (collection) => {
-        const query = { email, senha };
-        return await collection.findOne(query);
-      }
-    );
-
-    if (!response) {
-      return utils.returnDb.notAuthorized(response);
-    }
-
-    delete response.senha;
     return utils.returnDb.success(response);
   } catch (error) {
     return utils.returnDb.error(error.message || error.stack);
@@ -134,5 +117,4 @@ module.exports = {
   insert,
   update,
   remove,
-  login,
 };

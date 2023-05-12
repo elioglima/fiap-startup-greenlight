@@ -6,10 +6,19 @@ coverage
 manifest.json
 .serverless/
 .idea
+
+api/node_modules
+api/package-lock.json
+api/yarn-lock.json
+
+client/greenlight-app/.env
 client/greenlight-app/node_modules
 client/greenlight-app/package-lock.json
 client/greenlight-app/yarn-lock.json
 
+client/greenlight-front/.env
 client/greenlight-front/node_modules
 client/greenlight-front/package-lock.json
 client/greenlight-front/yarn-lock.json
+
+.env

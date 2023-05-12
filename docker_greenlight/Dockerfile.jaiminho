@@ -1,0 +1,19 @@
+FROM openjdk:8-jre-alpine
+
+ENV DYNAMODB_VERSION=latest
+ENV DYNAMODB_HOME=/opt/dynamodb
+
+# Instalação do DynamoDB Local
+RUN mkdir -p ${DYNAMODB_HOME} && \
+    wget -O dynamodb_local.tar.gz https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_${DYNAMODB_VERSION}.tar.gz && \
+    tar xfz dynamodb_local.tar.gz -C ${DYNAMODB_HOME} && \
+    rm dynamodb_local.tar.gz
+
+# Define o diretório de trabalho
+WORKDIR ${DYNAMODB_HOME}
+
+# Expõe a porta 8000 para acesso ao DynamoDB Local
+EXPOSE 8000
+
+# Comando para iniciar o DynamoDB Local
+CMD ["java", "-Djava.library.path=./DynamoDBLocal_lib", "-jar", "DynamoDBLocal.jar", "-sharedDb"]

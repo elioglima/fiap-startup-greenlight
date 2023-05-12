@@ -5,10 +5,12 @@ const find = async ({ queryStringParameters }) => {
   try {
     const params = queryStringParameters || {};
     const query = {
-      ...(params.eventoId ? { eventoId: params?.eventoId } : {}),
+      ...(params.id ? { id: params?.id } : {}),
+      ...(params.usuarioId ? { usuarioId: params?.usuarioId } : {}),
     };
-    const response = await db.eventParticipant.find(query);
-    return httpHelper.ok(response);
+    const response = await db.category.find(query);
+    const list = response.data || [];
+    return httpHelper.ok(list);
   } catch (error) {
     return httpHelper.badRequest(error);
   }
@@ -18,8 +20,8 @@ const update = async ({ queryStringParameters, body }) => {
   try {
     const params = queryStringParameters;
     const value = JSON.parse(body);
-    const filter = { id: params?.codigo };
-    const response = await db.eventParticipant.update(filter, value);
+    const filter = { id: params?.id };
+    const response = await db.categories.update(filter, value);
     return httpHelper.ok(response);
   } catch (error) {
     return httpHelper.badRequest(error);
@@ -28,10 +30,8 @@ const update = async ({ queryStringParameters, body }) => {
 
 const insert = async ({ body }) => {
   try {
-    // validar participante de entrada
-    // validar dono do evento
     const value = JSON.parse(body);
-    const response = await db.eventParticipant.insert(value);
+    const response = await db.categories.insert(value);
     return httpHelper.ok(response);
   } catch (error) {
     return httpHelper.badRequest(error);
@@ -41,10 +41,10 @@ const insert = async ({ body }) => {
 const remove = async ({ queryStringParameters }) => {
   try {
     const params = queryStringParameters;
-    if (!params?.codigo) {
+    if (!params?.id) {
       return httpHelper.notFound();
     }
-    const response = await db.eventParticipant.remove(params?.codigo);
+    const response = await db.categories.remove(params?.id);
     return httpHelper.ok(response);
   } catch (error) {
     return httpHelper.badRequest(error);

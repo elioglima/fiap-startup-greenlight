@@ -1,0 +1,33 @@
+{
+  "name": "startup-greenlight",
+  "version": "0.0.0",
+  "description": "FIAP Startup",
+  "author": "Firebug",
+  "main": "start.js",
+  "private": true,
+  "engines": {
+    "node": ">= 7.6.0"
+  },
+  "scripts": {
+    "docker": "docker compose -f ./docker_greenlight/docker-compose-ambiente.local.yml up -d --force-recreate --build",
+    "api:install": "cd api && yarn && cd .. ",
+    "api:start": "cd api && yarn serverless offline && cd .. ",
+    "web:install": "cd client/greenlight-front && yarn && cd .. ",
+    "web:start": "cd client/greenlight-front && yarn start && cd .. ",
+    "ios:install": "cd client/greenlight-app && yarn ios:install && cd .. ",
+    "ios:start": "cd client/greenlight-app && yarn start && cd .. "
+  },
+  "dependencies": {
+    "mongoose": "5.1.8"
+  },
+  "devDependencies": {
+    "axios": "^1.4.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "react-native-elements": "^3.4.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

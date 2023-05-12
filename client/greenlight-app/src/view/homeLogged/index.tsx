@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {NavigationSwitchScreenProps} from 'react-navigation';
 
@@ -13,10 +13,24 @@ import {
 } from 'components';
 
 import * as St from './styles';
+import {listCategory} from 'service/categoryService';
+import {TMenuItem} from 'domain/types/TMenuItem';
+import {listEvent} from 'service/eventService';
+import {TListItems} from 'domain/types/TListItems';
 
 const HomeView = (props: NavigationSwitchScreenProps) => {
   const {navigation}: NavigationSwitchScreenProps = props;
   const [openAddItem, setOpenAddItem] = useState<boolean>(false);
+  const [listDataCategory, setListDataCategory] = useState<TMenuItem[]>([]);
+
+  const loadPage = async () => {
+    const list: TMenuItem[] = await listCategory();
+    setListDataCategory(list);
+  };
+
+  useEffect(() => {
+    loadPage();
+  }, []);
 
   return (
     <>
@@ -32,8 +46,9 @@ const HomeView = (props: NavigationSwitchScreenProps) => {
             <MapThumbnail />
             <St.ButtomRow>
               <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('EventView');
+                onPress={async () => {
+                  const list: TListItems[] = await listEvent();
+                  navigation.navigate('EventView', list);
                 }}>
                 <St.ButtomBase>
                   <St.ButtomLogo>
@@ -61,24 +76,7 @@ const HomeView = (props: NavigationSwitchScreenProps) => {
               </St.MakerBase>
             </St.BoxRow>
             <HorizontalMenu
-              items={[
-                {
-                  id: '123',
-                  title: 'Corrida',
-                },
-                {
-                  id: '123',
-                  title: 'Yoga',
-                },
-                {
-                  id: '123',
-                  title: 'Corrida',
-                },
-                {
-                  id: '123',
-                  title: 'Ar-livre',
-                },
-              ]}
+              items={listDataCategory}
               onPressItem={(item: any) => {
                 console.log(item);
               }}

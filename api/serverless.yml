@@ -6,9 +6,9 @@ provider:
   timeout: 30
   memorySize: 128
   runtime: nodejs14.x
-  region: us-east-1 
+  region: us-east-1
   environment:
-    MONGODB_URI: 'mongodb+srv://admin:AB102030@greenliht.z4jbtfo.mongodb.net/test'
+    MONGODB_URI: "mongodb://localhost:27017/greenlight"
 
 functions: ${file(serverless/functions.yml)}
 

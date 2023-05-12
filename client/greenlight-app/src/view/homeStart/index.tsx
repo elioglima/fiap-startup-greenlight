@@ -23,7 +23,7 @@ const HomeView = (props: NavigationSwitchScreenProps) => {
         maratonas, corridas,e muito mais.
       </St.Description>
       {optIn ? (
-        <ModalButtomLogin optIn={optIn} setOptIn={setOptIn} navigation={navigation} />
+        <ModalButtomLogin show={optIn} setShow={setOptIn} navigation={navigation} />
       ) : (
         <St.ButtomStart>
           <ButtomGo

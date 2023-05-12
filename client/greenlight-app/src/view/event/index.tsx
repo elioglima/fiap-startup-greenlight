@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {NavigationSwitchScreenProps} from 'react-navigation';
 
@@ -6,44 +6,23 @@ import {EventList, IconBigAddSVG, LoadApp, ModalAddEvent, ModalDetailsEvent} fro
 import {TListItems} from 'domain/types/TListItems';
 
 import * as St from './styles';
+import {listEvent} from 'service/eventService';
 
 const EventView = (props: NavigationSwitchScreenProps) => {
   const {navigation} = props;
   const [openEditItem, setOpenEditItem] = useState<TListItems | undefined>();
   const [openAddItem, setOpenAddItem] = useState<boolean>(false);
+  const [listData, setListData] = useState<TListItems[]>([]);
 
-  const dataMock: TListItems[] = [
-    {
-      id: '112',
-      title: 'Corrida Noturna',
-      date: new Date(),
-      timeStart: '11:00h',
-      photoDataBase64: 'ssssbase64',
-    },
-    {
-      id: '112',
-      title: 'Yoga no Parque',
-      date: new Date(),
-      timeStart: '19h30',
-      photoDataBase64: 'ssssbase64',
-    },
-    {
-      id: '112',
-      title: '3a Corrida dos Amigos',
-      date: new Date(),
-      timeStart: '10:00h',
-      photoDataBase64: 'ssssbase64',
-    },
-    {
-      id: '112',
-      title: 'Academia ao Ar-livre',
-      date: new Date(),
-      timeStart: '19h30',
-      photoDataBase64: 'ssssbase64',
-    },
-  ];
+  const loadPage = async () => {
+    console.log(111, navigation.state.params);
+    const list: TListItems[] = navigation.state.params || [];
+    setListData(list);
+  };
 
-  const [dataListItem] = useState<TListItems[]>(dataMock);
+  useEffect(() => {
+    loadPage();
+  }, []);
 
   const IconRight = () => {
     return (
@@ -60,7 +39,7 @@ const EventView = (props: NavigationSwitchScreenProps) => {
             onPressEdit={value => {
               setOpenEditItem(value);
             }}
-            items={dataListItem}
+            items={listData}
             setOpenAddItem={setOpenAddItem}
           />
         </St.Container>

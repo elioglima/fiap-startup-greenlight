@@ -12,30 +12,26 @@ interface propState {
   value?: TValue;
   control: any;
   formState: any;
-  secureTextEntry?: boolean;
 }
 
-export const InputDefault = (props: propState) => {
+export const SwitchDefault = (props: propState) => {
   const {errors} = props.formState;
 
   return (
     <St.Container>
       <Controller
         control={props.control}
-        rules={{
-          required: true,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <St.Input
-            secureTextEntry={props.secureTextEntry || false}
-            placeholder={props.placeholder || ''}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
+        rules={
+          {
+            // required: true,
+          }
+        }
+        render={({field: {onChange, value}}) => (
+          <St.Switch value={value} onValueChange={onChange} />
         )}
         name={props.name}
       />
+      <St.SwitchText>{props.placeholder || ''}</St.SwitchText>
       {errors[props.name] && <Text>This is required.</Text>}
     </St.Container>
   );

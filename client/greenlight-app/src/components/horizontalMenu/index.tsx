@@ -2,19 +2,15 @@ import React from 'react';
 import {FlatList, TouchableOpacity, View} from 'react-native';
 
 import * as St from './styles';
-
-interface MenuItem {
-  id: string;
-  title: string;
-}
+import {TMenuItem} from 'domain/types/TMenuItem';
 
 interface Props {
-  items: MenuItem[];
-  onPressItem: (item: MenuItem) => void;
+  items: TMenuItem[];
+  onPressItem: (item: TMenuItem) => void;
 }
 
 export const HorizontalMenu: React.FC<Props> = ({items, onPressItem}) => {
-  const renderItem = ({item}: {item: MenuItem}) => {
+  const renderItem = ({item}: {item: TMenuItem}) => {
     return (
       <TouchableOpacity onPress={() => onPressItem(item)}>
         <St.HorizontalMenuItemBase>
@@ -37,6 +33,5 @@ export const HorizontalMenu: React.FC<Props> = ({items, onPressItem}) => {
     </View>
   );
 };
-
 
 export default HorizontalMenu;

@@ -20,7 +20,7 @@
         "domain/*"
       ],
       "service/*": [
-        "components/service/*"
+        "service/*"
       ],
       "utils/*": [
         "utils/*"
@@ -37,7 +37,14 @@
       "types/*": [
         "domain/types/*"
       ],
-    }
+      "config/*": [
+        "config/*"
+      ],
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@react-native-async-storage/async-storage"
+    ]
   },
   "exclude": [
     "node_modules",

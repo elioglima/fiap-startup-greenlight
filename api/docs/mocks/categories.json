@@ -1,0 +1,14 @@
+[
+  {
+    "idCategory": 1,
+    "description": "Corrida"
+  },
+  {
+    "idCategory": 2,
+    "description": "Yoga"
+  },
+  {
+    "idCategory": 3,
+    "description": "Treino"
+  }
+]
