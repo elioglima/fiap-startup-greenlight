@@ -15,7 +15,7 @@
     "web:install": "cd client/greenlight-front && yarn && cd .. ",
     "web:start": "cd client/greenlight-front && yarn start && cd .. ",
     "ios:install": "cd client/greenlight-app && yarn ios:install && cd .. ",
-    "ios:start": "cd client/greenlight-app && yarn start && cd .. "
+    "ios:start": "cd client/greenlight-app && yarn ios:start && cd .. "
   },
   "dependencies": {
     "mongoose": "5.1.8"

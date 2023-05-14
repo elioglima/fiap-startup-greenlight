@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationSwitchScreenProps} from 'react-navigation';
 
 import {ButtomGo, LoadApp, ModalButtomLogin} from 'components';
@@ -8,6 +8,8 @@ import * as St from './styles';
 const HomeView = (props: NavigationSwitchScreenProps) => {
   const {navigation}: NavigationSwitchScreenProps = props;
   const [optIn, setOptIn] = useState(false);
+
+  useEffect(() => {}, []);
 
   return (
     <LoadApp {...props}>

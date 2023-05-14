@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "start": "react-native run-ios",
+    "ios:start": "react-native run-ios",
     "ios:install": "sudo rm -rf node_modules package-lock.json yarn.lock yarn-error.log && yarn && cd ios && pod deintegrate && pod install && cd ..",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
