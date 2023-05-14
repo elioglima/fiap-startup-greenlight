@@ -6,7 +6,7 @@ export const ContainerBase = styled.View`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(57, 16, 73, 0.8);
 `;
 
 export const Container = styled.View`

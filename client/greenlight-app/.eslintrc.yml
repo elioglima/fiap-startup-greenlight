@@ -36,7 +36,6 @@ rules:
   'react-native/no-inline-styles': 'off'
   '@typescript-eslint/no-shadow': 'off'
   'react-hooks/exhaustive-deps': 'off'
-
 plugins:
   - prettier
 ignorePatterns:

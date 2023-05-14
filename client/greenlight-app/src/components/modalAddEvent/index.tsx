@@ -7,6 +7,9 @@ import {ButtomGo} from 'components/buttomGo';
 import {InputDefault} from 'components/inputDefault';
 import MapThumbnail from 'components/mapThumbnail';
 import * as St from './styles';
+import {useForm} from 'react-hook-form';
+import {serviceAddEvent} from 'service/eventService';
+import {TAddEvent} from 'domain/types/TAddEvent';
 
 interface functionBoolean {
   (active: boolean): void;
@@ -24,6 +27,32 @@ interface props {
 }
 
 export const ModalAddEvent = ({open, navigation, onClose}: props) => {
+  const {control, formState, handleSubmit, setValue} = useForm({
+    defaultValues: {
+      title: '',
+      date: '',
+      time: '',
+      location: '',
+    },
+  });
+
+  const onSubmitForm = async (data: any) => {
+    const dataRequest: TAddEvent = data;
+
+    // to-do: validacao
+    const response = await serviceAddEvent(dataRequest);
+    if (response) {
+      onClose && onClose();
+      return;
+    }
+
+    navigation.navigate('MessageView', {
+      title: 'Atenção',
+      message: 'Não foi possível acessar o sistema',
+      routeBack: 'HomeStart',
+    });
+  };
+
   if (!open) {
     return <></>;
   }
@@ -47,15 +76,41 @@ export const ModalAddEvent = ({open, navigation, onClose}: props) => {
         <St.FormBase>
           <St.Forms>
             <St.FormRow>
-              <St.FormInput style={{width: '47%'}}>
-                <InputDefault />
+              <St.FormInput style={{width: '100%'}}>
+                <InputDefault
+                  name={'title'}
+                  placeholder={'informe o titulo'}
+                  control={control}
+                  formState={formState}
+                />
               </St.FormInput>
+            </St.FormRow>
+            <St.FormRow>
               <St.FormInput style={{width: '47%'}}>
-                <InputDefault />
+                <InputDefault
+                  name={'date'}
+                  placeholder={'00/00/0000'}
+                  control={control}
+                  formState={formState}
+                />
+              </St.FormInput>
+
+              <St.FormInput style={{width: '47%'}}>
+                <InputDefault
+                  name={'time'}
+                  placeholder={'00h00'}
+                  control={control}
+                  formState={formState}
+                />
               </St.FormInput>
             </St.FormRow>
             <St.FormInput>
-              <InputDefault />
+              <InputDefault
+                name={'location'}
+                placeholder={'informe o local'}
+                control={control}
+                formState={formState}
+              />
             </St.FormInput>
           </St.Forms>
           <St.Maps>
@@ -65,7 +120,11 @@ export const ModalAddEvent = ({open, navigation, onClose}: props) => {
 
         <St.Buttons>
           <St.Col style={{width: '80%'}}>
-            <ButtomGo textTransform="uppercase" title="SALVAR EVENTO" onPress={() => {}} />
+            <ButtomGo
+              textTransform="uppercase"
+              title="SALVAR EVENTO"
+              onPress={handleSubmit(onSubmitForm)}
+            />
           </St.Col>
         </St.Buttons>
       </St.Container>
