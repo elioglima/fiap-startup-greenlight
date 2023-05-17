@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 export const ContainerBase = styled.View`
   display: flex;
   position: absolute;
-  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
@@ -13,7 +12,7 @@ export const Container = styled.View`
   display: flex;
   flex-direction: column;
   position: absolute;
-  bottom: 0;
+  bottom: 110;
   background-color: #fff;
   width: 100%;
   z-index: 1000;
@@ -115,7 +114,7 @@ export const Maps = styled.View`
 export const Buttons = styled.View`
   display: flex;
   width: 94%;
-  margin: 10px 10px 40px 10px;
+  margin: 10px 10px 50px 10px;
   flex-direction: row;
   justify-content: space-between;
 `;

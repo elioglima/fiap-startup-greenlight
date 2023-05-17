@@ -35,3 +35,28 @@ export type TStoreEventListState = {
   request?: TStoreEventListRequest;
   response?: TStoreEventListResponse;
 };
+
+export type TStoreEventAddRequest = {
+  usuarioId: string;
+  categoryId: string;
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+};
+
+export type TStoreEventAddResponse = {
+  error: boolean;
+  lenght: number;
+  data: any;
+};
+
+export type TStoreEventAddState = {
+  type?: string;
+  loading: boolean;
+  loaded: boolean;
+  message?: any;
+  error?: boolean;
+  request?: TStoreEventAddRequest;
+  response?: TStoreEventAddResponse;
+};

@@ -4,10 +4,15 @@ import {useForm} from 'react-hook-form';
 import {BaseHeader} from '@components/baseHeader';
 import {ButtomGo} from '@components/buttomGo';
 import {InputDefault} from '@components/inputDefault';
+import {SelectDefault} from '@components/selectDefault';
+
 import MapThumbnail from '@components/mapThumbnail';
-import {TAddEvent} from '@domain/types/TAddEvent';
-import {serviceAddEvent} from '@service/eventService';
+import {TStoreEventAddRequest} from '@domain/types/TStates';
+import {useDispatch, useSelector} from 'react-redux';
+import {TAppState} from '@app/store';
+
 import * as St from './styles';
+import {ActionEventAdd} from '@stores/event/store.event.add';
 
 interface functionBoolean {
   (active: boolean): void;
@@ -24,30 +29,34 @@ interface props {
 }
 
 export const ModalAddEvent = ({open, onClose}: props) => {
+  const dispath = useDispatch();
+  const login = useSelector((state: TAppState) => state.login.response);
+  const category = useSelector((state: TAppState) => state.serviceCategory.response?.rows || []);
+
   const {control, formState, handleSubmit, setValue} = useForm({
     defaultValues: {
-      title: '',
-      date: '',
-      time: '',
-      location: '',
+      title: 'Novo Evento 2',
+      date: new Date().toISOString(),
+      time: '19h:15',
+      location: 'Rua Abadiania 832b',
+      categoryId: '6464d17fe282cbb0245112f8',
     },
   });
 
   const onSubmitForm = async (data: any) => {
-    const dataRequest: TAddEvent = data;
+    const dataRequest: TStoreEventAddRequest = {
+      ...data,
+      usuarioId: login?.user?._id,
+    };
+
+    dispath(ActionEventAdd(dataRequest));
 
     // to-do: validacao
-    const response = await serviceAddEvent(dataRequest);
-    if (response) {
-      onClose && onClose();
-      return;
-    }
-
-    // navigation.navigate('MessageView', {
-    //   title: 'Atenção',
-    //   message: 'Não foi possível acessar o sistema',
-    //   routeBack: 'HomeStart',
-    // });
+    // const response = await serviceAddEvent(dataRequest);
+    // if (response) {
+    //   onClose && onClose();
+    //   return;
+    // }
   };
 
   if (!open) {
@@ -71,6 +80,17 @@ export const ModalAddEvent = ({open, onClose}: props) => {
 
         <St.FormBase>
           <St.Forms>
+            <St.FormRow>
+              <St.FormInput style={{width: '100%'}}>
+                <SelectDefault
+                  name={'categoryId'}
+                  placeholder={'informe o titulo'}
+                  control={control}
+                  formState={formState}
+                  data={category}
+                />
+              </St.FormInput>
+            </St.FormRow>
             <St.FormRow>
               <St.FormInput style={{width: '100%'}}>
                 <InputDefault

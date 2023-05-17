@@ -39,7 +39,6 @@ export const ModalDetailsEvent = ({open, onClose, item, setOpenAddItem}: props) 
           }}
           title={item?.title}
         />
-
         <St.Header>
           <St.Col>
             <IconSmallCalendarSVG color={EColors.black} />

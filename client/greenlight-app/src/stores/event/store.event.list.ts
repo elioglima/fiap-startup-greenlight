@@ -6,10 +6,9 @@ import {
   TStoreEventListResponse,
   TStoreEventListState,
 } from '@domain/types/TStates';
-import {TListItems} from '@domain/types/TListItems';
 import {pushHistory} from '@stores/store.history';
 
-const name = 'API-EVENT';
+const name = 'API-EVENT-LIST';
 
 export enum EActionTypeEventList {
   execute = `${name}_EXECUTE`,

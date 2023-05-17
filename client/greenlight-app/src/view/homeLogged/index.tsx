@@ -19,7 +19,7 @@ import * as St from './styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {TAppState} from '@app/store';
 import {ActionCategory} from '@stores/store.service.category';
-import {ActionEventList} from '@stores/store.service.event';
+import {ActionEventList} from '@stores/event/store.event.list';
 
 const HomeView = () => {
   const [openAddItem, setOpenAddItem] = useState<boolean>(false);
@@ -105,12 +105,12 @@ const HomeView = () => {
             <HorizontalMenu
               items={listDataCategory}
               onPressItem={async (item: TMenuItem) => {
-                const loginStringfy: any = await getStoreData('login');
-                const login: TDBUser = JSON.parse(loginStringfy);
-                const list: TListItems[] = await listEvent({
-                  usuarioId: login._id,
-                  categoryId: item.id,
-                });
+                // const loginStringfy: any = await getStoreData('login');
+                // const login: TDBUser = JSON.parse(loginStringfy);
+                // const list: TListItems[] = await listEvent({
+                //   usuarioId: login._id,
+                //   categoryId: item.id,
+                // });
                 // await navigation.setParams({
                 //   list,
                 //   login,

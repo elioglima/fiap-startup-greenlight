@@ -6,3 +6,9 @@ export type TAddEvent = {
   time: string;
   location: string;
 };
+
+export type TAddEventReturn = {
+  error: boolean;
+  lenght: number;
+  data: any;
+};

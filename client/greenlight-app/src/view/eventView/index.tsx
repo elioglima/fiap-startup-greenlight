@@ -12,6 +12,7 @@ import IconBigAddSVG from '@components/svg/IconBigAddSVG';
 import * as St from './styles';
 import {TAppState} from '@app/store';
 import {useSelector} from 'react-redux';
+import ControllerApp from '@components/controllerApp';
 
 const EventView = () => {
   const [openEditItem, setOpenEditItem] = useState<TListItems | undefined>();
@@ -39,8 +40,8 @@ const EventView = () => {
     );
   };
   return (
-    <>
-      <LoadApp backRoute={'HomeLogged'} title="Eventos" iconRight={<IconRight />}>
+    <ControllerApp>
+      <LoadApp backRoute={'/HomeLogged'} title="Eventos" iconRight={<IconRight />}>
         <St.Container>
           <EventList
             onPressEdit={value => {
@@ -66,7 +67,7 @@ const EventView = () => {
           setOpenAddItem(false);
         }}
       />
-    </>
+    </ControllerApp>
   );
 };
 

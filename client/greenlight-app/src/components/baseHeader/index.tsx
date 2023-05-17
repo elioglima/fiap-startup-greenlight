@@ -3,6 +3,8 @@ import {Text, TouchableOpacity} from 'react-native';
 
 import IconArrowSVG from '@components/svg/IconArrowSVG';
 import * as St from './styles';
+import {useDispatch} from 'react-redux';
+import {pushHistory} from '@stores/store.history';
 
 interface props {
   title?: string;
@@ -11,6 +13,8 @@ interface props {
 }
 
 export const BaseHeader = ({backRoute, title, iconRight}: props) => {
+  const dispath = useDispatch();
+
   return (
     <St.BaseHeader>
       {(backRoute || title || iconRight) && (
@@ -20,6 +24,12 @@ export const BaseHeader = ({backRoute, title, iconRight}: props) => {
               <TouchableOpacity
                 onPress={() => {
                   if (typeof backRoute === 'string') {
+                    console.log(backRoute);
+                    dispath(
+                      pushHistory({
+                        route: backRoute,
+                      }),
+                    );
                     // navigation && navigation.navigate(backRoute);
                     return;
                   }
