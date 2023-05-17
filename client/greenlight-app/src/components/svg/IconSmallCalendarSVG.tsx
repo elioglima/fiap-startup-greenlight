@@ -1,4 +1,4 @@
-import {EColors} from 'domain/enum/EColors';
+import {EColors} from '@domain/enum/EColors';
 import React from 'react';
 import {View} from 'react-native';
 import {Path, Rect, Svg} from 'react-native-svg';

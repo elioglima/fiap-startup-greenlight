@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {ProfileSVG} from '../svg/ProfileSVG';
+import {ProfileSVG} from '@components/svg/ProfileSVG';
 import * as St from './styles';
 
 export const HomeLoggedHeader: React.FC = () => {

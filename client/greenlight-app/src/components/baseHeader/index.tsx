@@ -1,18 +1,16 @@
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 
-import {IconArrowSVG} from 'components/svg';
-import {NavigationParams, NavigationRoute, NavigationSwitchProp} from 'react-navigation';
+import IconArrowSVG from '@components/svg/IconArrowSVG';
 import * as St from './styles';
 
 interface props {
   title?: string;
   backRoute?: string | Function;
   iconRight?: any;
-  navigation?: NavigationSwitchProp<NavigationRoute, NavigationParams>;
 }
 
-export const BaseHeader = ({navigation, backRoute, title, iconRight}: props) => {
+export const BaseHeader = ({backRoute, title, iconRight}: props) => {
   return (
     <St.BaseHeader>
       {(backRoute || title || iconRight) && (
@@ -22,7 +20,7 @@ export const BaseHeader = ({navigation, backRoute, title, iconRight}: props) => 
               <TouchableOpacity
                 onPress={() => {
                   if (typeof backRoute === 'string') {
-                    navigation && navigation.navigate(backRoute);
+                    // navigation && navigation.navigate(backRoute);
                     return;
                   }
 

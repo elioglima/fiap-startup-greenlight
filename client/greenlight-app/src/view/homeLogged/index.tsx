@@ -1,42 +1,50 @@
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {NavigationSwitchScreenProps} from 'react-navigation';
 
-import {
-  HomeLoggedHeader,
-  HorizontalMenu,
-  IconCalendarAddSVG,
-  IconCalendarSVG,
-  LoadApp,
-  MapThumbnail,
-  ModalAddEvent,
-} from 'components';
-
+import HomeLoggedHeader from '@components/homeLoggedHeader';
+import HorizontalMenu from '@components/horizontalMenu';
+import ControllerApp from '@components/controllerApp';
+import {LoadApp} from '@components/loadApp';
+import MapThumbnail from '@components/mapThumbnail';
+import {ModalAddEvent} from '@components/modalAddEvent';
+import {IconCalendarAddSVG} from '@components/svg/IconCalendarAddSVG';
+import {IconCalendarSVG} from '@components/svg/IconCalendarSVG';
+import {TDBUser} from '@domain/types/TDatabase';
+import {TListItems} from '@domain/types/TListItems';
+import {TMenuItem} from '@domain/types/TMenuItem';
+import {listCategory} from '@service/categoryService';
+import {listEvent} from '@service/eventService';
+import {getStoreData} from '@utils/storage';
 import * as St from './styles';
-import {listCategory} from 'service/categoryService';
-import {TMenuItem} from 'domain/types/TMenuItem';
-import {listEvent} from 'service/eventService';
-import {TListItems} from 'domain/types/TListItems';
-import {getStoreData} from 'utils/storage';
-import {TDBUser} from 'domain/types/TDatabase';
+import {useDispatch, useSelector} from 'react-redux';
+import {TAppState} from '@app/store';
+import {ActionCategory} from '@stores/store.service.category';
+import {ActionEventList} from '@stores/store.service.event';
 
-const HomeView = (props: NavigationSwitchScreenProps) => {
-  const {navigation}: NavigationSwitchScreenProps = props;
+const HomeView = () => {
   const [openAddItem, setOpenAddItem] = useState<boolean>(false);
   const [listDataCategory, setListDataCategory] = useState<TMenuItem[]>([]);
 
-  const loadPage = async () => {
-    const list: TMenuItem[] = await listCategory();
-    setListDataCategory(list);
-  };
+  const dispath = useDispatch();
+  const category = useSelector((state: TAppState) => state.serviceCategory);
+  const login = useSelector((state: TAppState) => state.login);
 
   useEffect(() => {
-    loadPage();
+    if (!category.loaded || category.loading) {
+      return;
+    }
+
+    const list: TMenuItem[] = category.response?.rows || [];
+    setListDataCategory(list);
+  }, [category]);
+
+  useEffect(() => {
+    dispath(ActionCategory());
   }, []);
 
   return (
-    <>
-      <LoadApp {...props}>
+    <ControllerApp>
+      <LoadApp>
         <St.Container>
           <St.Content>
             <St.Box>
@@ -49,18 +57,25 @@ const HomeView = (props: NavigationSwitchScreenProps) => {
             <St.ButtomRow>
               <TouchableOpacity
                 onPress={async () => {
-                  const loginStringfy: any = await getStoreData('login');
-                  const login: TDBUser = JSON.parse(loginStringfy);
-                  const list: TListItems[] = await listEvent({
-                    usuarioId: login._id,
-                    categoryId: undefined,
-                  });
-                  await navigation.setParams({
-                    list,
-                    login,
-                  });
+                  dispath(
+                    ActionEventList({
+                      usuarioId: login.response?.user?._id || '-1',
+                      categoryId: undefined,
+                    }),
+                  );
 
-                  await navigation.navigate('EventView', {list});
+                  // const loginStringfy: any = await getStoreData('login');
+                  // const login: TDBUser = JSON.parse(loginStringfy);
+                  // const list: TListItems[] = await listEvent({
+                  //   usuarioId: login._id,
+                  //   categoryId: undefined,
+                  // });
+                  // await navigation.setParams({
+                  //   list,
+                  //   login,
+                  // });
+
+                  // await navigation.navigate('EventView', {list});
                 }}>
                 <St.ButtomBase>
                   <St.ButtomLogo>
@@ -96,11 +111,11 @@ const HomeView = (props: NavigationSwitchScreenProps) => {
                   usuarioId: login._id,
                   categoryId: item.id,
                 });
-                await navigation.setParams({
-                  list,
-                  login,
-                });
-                await navigation.navigate('EventView', {list});
+                // await navigation.setParams({
+                //   list,
+                //   login,
+                // });
+                // await navigation.navigate('EventView', {list});
               }}
             />
           </St.Content>
@@ -109,14 +124,13 @@ const HomeView = (props: NavigationSwitchScreenProps) => {
       {openAddItem && (
         <ModalAddEvent
           open={openAddItem}
-          navigation={navigation}
           setOpenAddItem={setOpenAddItem}
           onClose={() => {
             setOpenAddItem(false);
           }}
         />
       )}
-    </>
+    </ControllerApp>
   );
 };
 

@@ -1,6 +1,6 @@
+import {LogoAppleSVG} from '@components/svg/LogoAppleSVG';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import {LogoAppleSVG} from '../svg/LogoAppleSVG';
 import * as St from './styles';
 
 interface iProps {

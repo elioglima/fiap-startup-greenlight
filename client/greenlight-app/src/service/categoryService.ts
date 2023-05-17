@@ -1,17 +1,26 @@
-import {envConfig} from 'config/envConfig';
-import {HttpOptions, HttpResponse} from 'domain/types/THttp';
-import {getRequest} from 'utils/service.https';
+import {envConfig} from '@configs/envConfig';
+import {HttpOptions, HttpResponse} from '@domain/types/THttp';
+import {TMenuItem} from '@domain/types/TMenuItem';
+import {TStoreCategoryRequest} from '@domain/types/TStates';
+import {getRequest} from '@utils/service.https';
 
-export const listCategory = async () => {
+export const listCategory = async (
+  request?: TStoreCategoryRequest,
+): Promise<TMenuItem[] | undefined> => {
+  const envs = await envConfig();
   const options: HttpOptions = {
-    path: `${envConfig.API_URL}/categoria`,
+    path: `${envs.API_URL}/categoria`,
   };
 
-  const response: HttpResponse = await getRequest(options, {limit: 20});
+  const response: HttpResponse = await getRequest(options, {
+    body: request,
+    limit: 20,
+  });
+
   if (response.err) {
     return undefined;
   }
-  console.log(response.data);
+
   const data = response.data;
   return data
     ? data.map((d: {_id: string; titulo: string}) => ({

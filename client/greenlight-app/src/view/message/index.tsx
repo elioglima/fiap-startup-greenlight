@@ -1,16 +1,10 @@
 import React from 'react';
-import {NavigationParams, NavigationRoute, NavigationSwitchProp} from 'react-navigation';
 
+import {ButtomGo} from '@components/buttomGo';
 import * as St from './styles';
-import {ButtomGo} from 'components/buttomGo';
 
-interface propState {
-  navigation: NavigationSwitchProp<NavigationRoute, NavigationParams>;
-}
-
-const MessageView = (props: propState) => {
-  const {navigation} = props;
-  const state = navigation.state;
+const MessageView = () => {
+  const state: any = undefined;
 
   console.log(JSON.stringify(state, null, 4));
 
@@ -29,7 +23,7 @@ const MessageView = (props: propState) => {
               textCenter={true}
               title="Entendi"
               onPress={() => {
-                navigation.navigate(state.params?.routeBack || 'HomeStart');
+                // navigation.navigate(state.params?.routeBack || 'HomeStart');
               }}
             />
           </St.Button>

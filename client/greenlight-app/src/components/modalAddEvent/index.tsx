@@ -1,15 +1,13 @@
 import React from 'react';
-
-import {NavigationParams, NavigationRoute, NavigationSwitchProp} from 'react-navigation';
-
-import {BaseHeader} from 'components/baseHeader';
-import {ButtomGo} from 'components/buttomGo';
-import {InputDefault} from 'components/inputDefault';
-import MapThumbnail from 'components/mapThumbnail';
-import * as St from './styles';
 import {useForm} from 'react-hook-form';
-import {serviceAddEvent} from 'service/eventService';
-import {TAddEvent} from 'domain/types/TAddEvent';
+
+import {BaseHeader} from '@components/baseHeader';
+import {ButtomGo} from '@components/buttomGo';
+import {InputDefault} from '@components/inputDefault';
+import MapThumbnail from '@components/mapThumbnail';
+import {TAddEvent} from '@domain/types/TAddEvent';
+import {serviceAddEvent} from '@service/eventService';
+import * as St from './styles';
 
 interface functionBoolean {
   (active: boolean): void;
@@ -22,11 +20,10 @@ interface functionVoid {
 interface props {
   open: boolean;
   onClose: functionVoid;
-  navigation: NavigationSwitchProp<NavigationRoute, NavigationParams>;
   setOpenAddItem: functionBoolean;
 }
 
-export const ModalAddEvent = ({open, navigation, onClose}: props) => {
+export const ModalAddEvent = ({open, onClose}: props) => {
   const {control, formState, handleSubmit, setValue} = useForm({
     defaultValues: {
       title: '',
@@ -46,11 +43,11 @@ export const ModalAddEvent = ({open, navigation, onClose}: props) => {
       return;
     }
 
-    navigation.navigate('MessageView', {
-      title: 'Atenção',
-      message: 'Não foi possível acessar o sistema',
-      routeBack: 'HomeStart',
-    });
+    // navigation.navigate('MessageView', {
+    //   title: 'Atenção',
+    //   message: 'Não foi possível acessar o sistema',
+    //   routeBack: 'HomeStart',
+    // });
   };
 
   if (!open) {
@@ -65,7 +62,6 @@ export const ModalAddEvent = ({open, navigation, onClose}: props) => {
 
         <St.BaseHeader>
           <BaseHeader
-            {...{navigation}}
             backRoute={() => {
               onClose && onClose();
             }}

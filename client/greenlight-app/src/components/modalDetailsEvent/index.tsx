@@ -1,20 +1,15 @@
+import moment from 'moment';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 
-import moment from 'moment';
-import {NavigationParams, NavigationRoute, NavigationSwitchProp} from 'react-navigation';
-
-import {
-  BaseHeader,
-  ButtomGo,
-  IconSmallCalendarSVG,
-  IconSmallTimeSVG,
-  IconTaskEditItemsSVG,
-  MapThumbnail,
-} from 'components';
-
-import {EColors} from 'domain/enum/EColors';
-import {TListItems} from 'domain/types/TListItems';
+import {BaseHeader} from '@components/baseHeader';
+import {ButtomGo} from '@components/buttomGo';
+import MapThumbnail from '@components/mapThumbnail';
+import {IconSmallCalendarSVG} from '@components/svg/IconSmallCalendarSVG';
+import {IconSmallTimeSVG} from '@components/svg/IconSmallTimeSVG';
+import IconTaskEditItemsSVG from '@components/svg/IconTaskEditItemsSVG';
+import {EColors} from '@domain/enum/EColors';
+import {TListItems} from '@domain/types/TListItems';
 import * as St from './styles';
 
 interface functionVoid {
@@ -25,10 +20,10 @@ interface props {
   open: boolean;
   onClose: functionVoid;
   item: TListItems | undefined;
-  navigation: NavigationSwitchProp<NavigationRoute, NavigationParams>;
+  setOpenAddItem: Function;
 }
 
-export const ModalDetailsEvent = ({open, onClose, navigation, item, setOpenAddItem}: props) => {
+export const ModalDetailsEvent = ({open, onClose, item, setOpenAddItem}: props) => {
   if (!open && !item) {
     return <></>;
   }
@@ -39,7 +34,6 @@ export const ModalDetailsEvent = ({open, onClose, navigation, item, setOpenAddIt
       <St.Container>
         <St.BaseClose />
         <BaseHeader
-          {...{navigation}}
           backRoute={() => {
             onClose && onClose();
           }}

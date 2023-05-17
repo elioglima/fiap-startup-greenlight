@@ -1,8 +1,8 @@
 import React from 'react';
 import {FlatList, TouchableOpacity, View} from 'react-native';
 
+import {TMenuItem} from '@domain/types/TMenuItem';
 import * as St from './styles';
-import {TMenuItem} from 'domain/types/TMenuItem';
 
 interface Props {
   items: TMenuItem[];

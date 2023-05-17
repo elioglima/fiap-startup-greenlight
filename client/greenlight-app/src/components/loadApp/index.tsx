@@ -1,9 +1,8 @@
 import React from 'react';
 import {SafeAreaView, StatusBar} from 'react-native';
 
-import {BaseHeader} from 'components/baseHeader';
-import {ECSSflexFirection} from 'domain/enum/ECSSflexFirection';
-import {NavigationParams, NavigationRoute, NavigationSwitchProp} from 'react-navigation';
+import {BaseHeader} from '@components/baseHeader';
+import {ECSSflexFirection} from '@domain/enum/ECSSflexFirection';
 import * as St from './styles';
 
 interface props {
@@ -11,13 +10,11 @@ interface props {
   title?: string;
   backRoute?: string | Function;
   iconRight?: any;
-  navigation?: NavigationSwitchProp<NavigationRoute, NavigationParams>;
   flexFirection?: ECSSflexFirection;
 }
 
 export const LoadApp = ({
   children,
-  navigation,
   backRoute,
   title,
   iconRight,
@@ -26,7 +23,7 @@ export const LoadApp = ({
   return (
     <SafeAreaView>
       <StatusBar />
-      <BaseHeader {...{navigation, iconRight}} backRoute={backRoute} title={title} />
+      <BaseHeader {...{iconRight}} backRoute={backRoute} title={title} />
       <St.Container {...{'flex-direction': flexFirection}}>{children && children}</St.Container>
     </SafeAreaView>
   );

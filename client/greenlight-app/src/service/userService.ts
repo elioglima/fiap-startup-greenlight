@@ -1,15 +1,18 @@
-import {envConfig} from 'config/envConfig';
-import {HttpOptions, HttpResponse} from 'domain/types/THttp';
-import {postRequest} from 'utils/service.https';
+import {envConfig} from '@configs/envConfig';
+import {HttpOptions, HttpResponse} from '@domain/types/THttp';
+import {TLoginRequest} from '@domain/types/TLogin';
+import {postRequest} from '@utils/service.https';
 
-export const login = async (data: any) => {
+export const login = async (request: TLoginRequest) => {
+  const envs = await envConfig();
   const options: HttpOptions = {
-    path: `${envConfig.API_URL}/usuario/acesso`,
+    path: `${envs.API_URL}/usuario/acesso`,
   };
-  console.log(options);
-  const response: HttpResponse = await postRequest(options, data);
+  const response: HttpResponse = await postRequest(options, request);
+
   if (response.err) {
     return undefined;
   }
+
   return response.data?.data;
 };

@@ -1,6 +1,6 @@
+import {LogoGoogleSVG} from '@components/svg/LogoGoogleSVG';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import {LogoGoogleSVG} from '../svg/LogoGoogleSVG';
 import * as St from './styles';
 
 interface iProps {

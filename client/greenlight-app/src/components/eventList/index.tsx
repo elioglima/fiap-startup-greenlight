@@ -1,10 +1,13 @@
-import moment from 'moment';
 import React from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 
-import {IconAddSVG, IconSmallCalendarSVG, IconSmallTimeSVG} from 'components';
-import {IOnPressEdit} from 'domain/interfaces/IOnPressEdit';
-import {TListItems} from 'domain/types/TListItems';
+import moment from 'moment';
+
+import IconAddSVG from '@components/svg/IconAddSVG';
+import {IconSmallCalendarSVG} from '@components/svg/IconSmallCalendarSVG';
+import {IconSmallTimeSVG} from '@components/svg/IconSmallTimeSVG';
+import {IOnPressEdit} from '@domain/interfaces/IOnPressEdit';
+import {TListItems} from '@domain/types/TListItems';
 import * as St from './styles';
 
 interface functionBoolean {

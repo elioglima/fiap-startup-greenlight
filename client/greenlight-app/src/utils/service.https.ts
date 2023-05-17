@@ -1,4 +1,4 @@
-import {HttpOptions, HttpRequestMethodEnum, HttpResponse} from 'domain/types/THttp';
+import {HttpOptions, HttpRequestMethodEnum, HttpResponse} from '@domain/types/THttp';
 import requestAxios from './request.axios';
 
 const request = async (options: HttpOptions, data: any): Promise<HttpResponse> => {

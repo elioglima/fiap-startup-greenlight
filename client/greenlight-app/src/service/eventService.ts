@@ -1,17 +1,17 @@
-import {envConfig} from 'config/envConfig';
-import {TAddEvent} from 'domain/types/TAddEvent';
-import {HttpOptions, HttpResponse} from 'domain/types/THttp';
-import {getRequest, postRequest} from 'utils/service.https';
+import {envConfig} from '@configs/envConfig';
+import {TAddEvent} from '@domain/types/TAddEvent';
+import {HttpOptions, HttpResponse} from '@domain/types/THttp';
+import {TListItems} from '@domain/types/TListItems';
+import {TStoreEventListRequest} from '@domain/types/TStates';
+import {getRequest, postRequest} from '@utils/service.https';
 
 export const listEvent = async ({
   usuarioId,
   categoryId,
-}: {
-  usuarioId?: string;
-  categoryId?: string;
-}) => {
+}: TStoreEventListRequest): Promise<TListItems[] | undefined> => {
+  const envs = await envConfig();
   const options: HttpOptions = {
-    path: `${envConfig.API_URL}/evento`,
+    path: `${envs.API_URL}/evento`,
   };
 
   const response: HttpResponse = await getRequest(options, {
@@ -19,6 +19,7 @@ export const listEvent = async ({
     ...(categoryId ? {categoryId} : {}),
     limit: 20,
   });
+
   if (response.err) {
     return undefined;
   }
@@ -45,8 +46,9 @@ export const listEvent = async ({
 };
 
 export const serviceAddEvent = async (dataRequest: TAddEvent) => {
+  const envs = await envConfig();
   const options: HttpOptions = {
-    path: `${envConfig.API_URL}/evento`,
+    path: `${envs.API_URL}/evento`,
   };
 
   const response: HttpResponse = await postRequest(options, {

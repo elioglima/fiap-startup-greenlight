@@ -1,19 +1,17 @@
 import React from 'react';
-import {NavigationParams, NavigationRoute, NavigationSwitchProp} from 'react-navigation';
 
-import {ButtomGo, ButtomGoogle} from 'components';
+import {ButtomGo} from '@components/buttomGo';
+import {ButtomGoogle} from '@components/buttomGoogle';
 import * as St from './styles';
-import {getStoreData} from 'utils/storage';
 
 interface propState {
   show: boolean;
   setShow: Function;
   setFormLocalShow: Function;
-  navigation: NavigationSwitchProp<NavigationRoute, NavigationParams>;
 }
 
 export const ButtonsLogin = (props: propState) => {
-  const {show, navigation, setFormLocalShow} = props;
+  const {show, setFormLocalShow} = props;
   if (!show) {
     return <></>;
   }
@@ -44,7 +42,7 @@ export const ButtonsLogin = (props: propState) => {
               textCenter={true}
               title="Continuar com Google"
               onPress={() => {
-                navigation.navigate('HomeLogged');
+                // navigation.navigate('HomeLogged');
               }}
             />
           </St.Button>
@@ -62,12 +60,12 @@ export const ButtonsLogin = (props: propState) => {
               textCenter={true}
               title="Continuar com Email"
               onPress={async () => {
-                await navigation.setParams({
-                  rememberLogin: (await getStoreData('rememberLogin')) || false,
-                  rememberEmail: await getStoreData('rememberEmail'),
-                  rememberSenha: await getStoreData('rememberSenha'),
-                  login: await getStoreData('login'),
-                });
+                // await navigation.setParams({
+                //   rememberLogin: (await getStoreData('rememberLogin')) || false,
+                //   rememberEmail: await getStoreData('rememberEmail'),
+                //   rememberSenha: await getStoreData('rememberSenha'),
+                //   login: await getStoreData('login'),
+                // });
                 setFormLocalShow(true);
               }}
             />

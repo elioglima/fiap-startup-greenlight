@@ -1,6 +1,6 @@
+import {HttpOptions, HttpRequestMethodEnum, HttpResponse} from '@domain/types/THttp';
 import axios from 'axios';
 import querystring from 'querystring';
-import {HttpOptions, HttpRequestMethodEnum, HttpResponse} from 'domain/types/THttp';
 
 export default async (options: HttpOptions, data?: any): Promise<HttpResponse> => {
   try {

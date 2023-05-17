@@ -1,7 +1,7 @@
+import {LogoFacebookSVG} from '@components/svg/LogoFacebookSVG';
 import React from 'react';
-import * as St from './styles';
 import {TouchableOpacity} from 'react-native';
-import {LogoFacebookSVG} from '../svg/LogoFacebookSVG';
+import * as St from './styles';
 
 interface iProps {
   title: string;

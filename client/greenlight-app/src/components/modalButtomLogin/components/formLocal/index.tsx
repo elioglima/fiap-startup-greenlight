@@ -1,33 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import {NavigationParams, NavigationRoute, NavigationSwitchProp} from 'react-navigation';
+import React from 'react';
 import {useForm} from 'react-hook-form';
 
-import {ButtomGo, InputDefault} from 'components';
+import {ButtomGo} from '@components/buttomGo';
+import {InputDefault} from '@components/inputDefault';
+import {SwitchDefault} from '@components/switchDefault';
 import * as St from './styles';
-import {SwitchDefault} from 'components/switchDefault';
 
 interface propState {
   show: boolean;
   setShow: Function;
-  navigation: NavigationSwitchProp<NavigationRoute, NavigationParams>;
   onSubmit: any;
 }
 
 export const FormLocal = (props: propState) => {
-  const {show, onSubmit, navigation} = props;
+  const {show, onSubmit} = props;
   const {control, formState, handleSubmit, setValue} = useForm({
     defaultValues: {
-      email: '',
-      senha: '',
-      rememberLogin: false,
+      email: 'elio.designer@hotmail.com',
+      senha: 'Ab@102030',
+      rememberLogin: true,
     },
   });
 
-  useEffect(() => {
-    setValue('email', navigation.state.params?.rememberEmail);
-    setValue('senha', navigation.state.params?.rememberSenha);
-    setValue('rememberLogin', Boolean(navigation.state.params?.rememberLogin));
-  }, [navigation.state.params, setValue]);
+  // useEffect(() => {
+  //   setValue('email', navigation.state.params?.rememberEmail);
+  //   setValue('senha', navigation.state.params?.rememberSenha);
+  //   setValue('rememberLogin', Boolean(navigation.state.params?.rememberLogin));
+  // }, [navigation.state.params, setValue]);
 
   if (!show) {
     return <></>;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {MapSampleSVG} from '../svg/MapSampleSVG';
+import {MapSampleSVG} from '@components/svg/MapSampleSVG';
 import * as St from './styles';
 
 export const MapThumbnail: React.FC = () => {
