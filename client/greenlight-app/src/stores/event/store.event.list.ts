@@ -99,6 +99,7 @@ function* eventListSagas(dataStore: TEventListAction): Generator<any> {
 
   try {
     const rows: any = yield call(eventService.listEvent, request || {});
+    console.log(111, rows);
     if (rows) {
       yield put(ActionEventListSuccess({rows: rows || []}));
       yield put(

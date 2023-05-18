@@ -5,6 +5,13 @@ loginUser:
         path: /usuario/acesso
         method: POST
 
+refreshUser:
+  handler: src/lambda/user.refresh
+  events:
+    - http:
+        path: /usuario/acesso
+        method: PUT
+
 findUser:
   handler: src/lambda/user.find
   events:

@@ -1,25 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 
+import {TAppState} from '@app/store';
+import ControllerApp from '@components/controllerApp';
 import HomeLoggedHeader from '@components/homeLoggedHeader';
 import HorizontalMenu from '@components/horizontalMenu';
-import ControllerApp from '@components/controllerApp';
 import {LoadApp} from '@components/loadApp';
 import MapThumbnail from '@components/mapThumbnail';
 import {ModalAddEvent} from '@components/modalAddEvent';
 import {IconCalendarAddSVG} from '@components/svg/IconCalendarAddSVG';
 import {IconCalendarSVG} from '@components/svg/IconCalendarSVG';
-import {TDBUser} from '@domain/types/TDatabase';
-import {TListItems} from '@domain/types/TListItems';
 import {TMenuItem} from '@domain/types/TMenuItem';
-import {listCategory} from '@service/categoryService';
-import {listEvent} from '@service/eventService';
-import {getStoreData} from '@utils/storage';
-import * as St from './styles';
-import {useDispatch, useSelector} from 'react-redux';
-import {TAppState} from '@app/store';
-import {ActionCategory} from '@stores/store.service.category';
 import {ActionEventList} from '@stores/event/store.event.list';
+import {ActionLoginRefresh} from '@stores/login/store.login';
+import {ActionCategory} from '@stores/store.service.category';
+import {useDispatch, useSelector} from 'react-redux';
+import * as St from './styles';
 
 const HomeView = () => {
   const [openAddItem, setOpenAddItem] = useState<boolean>(false);
@@ -27,7 +23,7 @@ const HomeView = () => {
 
   const dispath = useDispatch();
   const category = useSelector((state: TAppState) => state.serviceCategory);
-  const login = useSelector((state: TAppState) => state.login);
+  const stateLogin = useSelector((state: TAppState) => state.login);
 
   useEffect(() => {
     if (!category.loaded || category.loading) {
@@ -39,6 +35,9 @@ const HomeView = () => {
   }, [category]);
 
   useEffect(() => {
+    dispath(
+      ActionLoginRefresh({routeRedirect: '/HomeStart', user: stateLogin.response?.user || {}}),
+    );
     dispath(ActionCategory());
   }, []);
 
@@ -59,7 +58,7 @@ const HomeView = () => {
                 onPress={async () => {
                   dispath(
                     ActionEventList({
-                      usuarioId: login.response?.user?._id || '-1',
+                      usuarioId: stateLogin.response?.user?._id || '-1',
                       categoryId: undefined,
                     }),
                   );

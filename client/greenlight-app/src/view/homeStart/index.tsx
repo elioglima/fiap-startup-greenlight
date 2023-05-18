@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
+import {TAppState} from '@app/store';
 import {ButtomGo} from '@components/buttomGo';
+import ControllerApp from '@components/controllerApp';
 import HomeHeader from '@components/homeHeader';
 import {LoadApp} from '@components/loadApp';
-import ControllerApp from '@components/controllerApp';
 import {ModalButtomLogin} from '@components/modalButtomLogin';
-import {ActionLogin} from '@stores/store.login';
+import {TLoginState} from '@domain/types/TLogin';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory} from 'react-router-native';
 import * as St from './styles';
-import {TLoginResponse, TLoginState} from '@domain/types/TLogin';
-import {TAppState} from '@app/store';
-import {pushHistory} from '@stores/store.history';
 
 const HomeView = () => {
   const [optIn, setOptIn] = useState(false);
@@ -19,16 +16,10 @@ const HomeView = () => {
 
   const stateLogin: TLoginState = useSelector((state: TAppState) => state.login);
 
-  const states = useSelector(s => s);
-  useEffect(() => {
-    if (stateLogin.logged) {
-      dispath(
-        pushHistory({
-          route: '/HomeLogged',
-        }),
-      );
-    }
-  }, [states]);
+  // useEffect(() => {
+  //   console.log(2222, stateLogin);
+  //   dispath(ActionLoginRefresh({routeRedirect: '/HomeLogged'}, stateLogin));
+  // }, []);
 
   return (
     <ControllerApp>

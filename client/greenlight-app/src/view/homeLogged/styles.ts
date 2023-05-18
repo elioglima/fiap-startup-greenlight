@@ -79,11 +79,9 @@ export const ButtomText = styled.Text`
   color: #fff;
   font-weight: 600;
   font-size: 22px;
-  word-wrap: break-word;
   width: 92px;
   letter-spacing: 1px;
 `;
-
 
 export const Description = styled.Text`
   width: 100%;

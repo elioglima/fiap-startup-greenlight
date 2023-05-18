@@ -10,8 +10,8 @@ export default async (options: HttpOptions, data?: any): Promise<HttpResponse> =
       timeout: 120000,
       ...options,
       headers: {
-        // 'Content-Type': 'application/json',
-        ...(options.headers ? options.headers : {}),
+        'content-type': 'application/json',
+        // ...(options.headers ? options.headers : {}),
       },
     };
 
@@ -20,16 +20,20 @@ export default async (options: HttpOptions, data?: any): Promise<HttpResponse> =
     delete opt.headers['User-Agent'];
     delete opt.headers['Postman-Token'];
 
-    if (opt.method === HttpRequestMethodEnum.PUT) {
-      response = await axios.put(opt.path, data, opt);
-    } else if (opt.method === HttpRequestMethodEnum.GET) {
+    if (opt.method === HttpRequestMethodEnum.GET) {
       const queryString = Object.keys(data).length ? `?${querystring.encode(data)}` : '';
       const uri = `${opt.path}${queryString}`;
-
       response = await axios.get(uri, opt);
     } else if (opt.method === HttpRequestMethodEnum.POST) {
       const payload: any = typeof data === 'string' ? JSON.parse(data) : data;
       response = await axios.post(opt.path, payload, opt);
+    } else if (opt.method === HttpRequestMethodEnum.PUT) {
+      const payload: any = typeof data === 'string' ? JSON.parse(data) : data;
+      response = await axios.put(opt.path, payload, opt);
+    } else if (opt.method === HttpRequestMethodEnum.DELETE) {
+      const queryString = Object.keys(data).length ? `?${querystring.encode(data)}` : '';
+      const uri = `${opt.path}${queryString}`;
+      response = await axios.delete(uri, opt);
     } else {
       return {
         err: true,

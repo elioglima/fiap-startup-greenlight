@@ -1,5 +1,4 @@
 import {envConfig} from '@configs/envConfig';
-import {TAddEvent, TAddEventReturn} from '@domain/types/TServices';
 import {HttpOptions, HttpResponse} from '@domain/types/THttp';
 import {TListItems} from '@domain/types/TListItems';
 import {
@@ -7,7 +6,7 @@ import {
   TStoreEventAddResponse,
   TStoreEventListRequest,
 } from '@domain/types/TStates';
-import {getRequest, postRequest} from '@utils/service.https';
+import {deleteRequest, getRequest, putRequest} from '@utils/service.https';
 
 export const listEvent = async ({
   usuarioId,
@@ -18,11 +17,13 @@ export const listEvent = async ({
     path: `${envs.API_URL}/evento`,
   };
 
-  const response: HttpResponse = await getRequest(options, {
+  const params = {
     ...(usuarioId ? {usuarioId} : {}),
     ...(categoryId ? {categoryId} : {}),
     limit: 20,
-  });
+  };
+
+  const response: HttpResponse = await getRequest(options, params);
 
   if (response.err) {
     return undefined;
@@ -59,16 +60,31 @@ export const addEvent = async (
   };
 
   const dataAPI = {
+    usuarioId: dataRequest.usuarioId,
     categoryId: dataRequest.categoryId,
     data: dataRequest.date,
     local: dataRequest.location,
     tempo: dataRequest.time,
     titulo: dataRequest.title,
-    usuarioId: dataRequest.usuarioId,
   };
 
-  console.log(55555, dataAPI);
-  const response: HttpResponse = await postRequest(options, dataAPI);
+  const response: HttpResponse = await putRequest(options, dataAPI);
+  return response?.data;
+};
 
+export const deleteEvent = async (
+  dataRequest: TStoreEventAddRequest,
+): Promise<TStoreEventAddResponse> => {
+  const envs = await envConfig();
+
+  const options: HttpOptions = {
+    path: `${envs.API_URL}/evento`,
+  };
+
+  const dataAPI = {
+    id: dataRequest.id,
+  };
+
+  const response: HttpResponse = await deleteRequest(options, dataAPI);
   return response?.data;
 };

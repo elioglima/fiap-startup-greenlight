@@ -6,7 +6,9 @@ const parseValues = (values) => {
   return {
     ...(values.nome ? { nome: values.nome } : {}),
     ...(values.email ? { nome: values.email } : {}),
-    ...(values.senha ? { nome: values.senha } : {}),
+    ...(values.senha ? { senha: values.senha } : {}),
+    ...(values.data ? { data: values.data } : {}),
+    ...(values.token ? { token: values.token } : {}),
   };
 };
 
@@ -14,6 +16,7 @@ const queryMount = (params) => ({
   ...(params.id ? { _id: new ObjectId(params?.id) } : {}),
   ...(params.nome ? { nome: params?.nome } : {}),
   ...(params.email ? { email: params?.email } : {}),
+  ...(params.token ? { token: params?.token } : {}),
 });
 
 const find = async (filter, limit) => {
@@ -55,7 +58,7 @@ const update = async (filter, value) => {
       collectionName,
       async (collection) => {
         return await collection.updateOne(
-          { _id: new ObjectId(params?.id) },
+          { _id: new ObjectId(params?._id || params?.id) },
           { $set: parseValues(value) }
         );
       }
@@ -63,6 +66,7 @@ const update = async (filter, value) => {
 
     return utils.returnDb.success(response);
   } catch (error) {
+    console.log(error);
     return utils.returnDb.error(error.message || error.stack);
   }
 };

@@ -1,9 +1,17 @@
-const { find, login, insert, update, remove } = require('../services/user')
+const {
+  find,
+  login,
+  insert,
+  update,
+  remove,
+  refresh,
+} = require("../services/user");
 
 module.exports = {
-    find, 
-    login, 
-    insert, 
-    update, 
-    remove
-}
+  find,
+  login,
+  refresh,
+  insert,
+  update,
+  remove,
+};

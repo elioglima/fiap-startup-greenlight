@@ -9,6 +9,6 @@ export type TAddEvent = {
 
 export type TAddEventReturn = {
   error: boolean;
-  lenght: number;
+  length: number;
   data: any;
 };

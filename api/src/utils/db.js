@@ -1,28 +1,32 @@
-const connect = require('../database/connect')
+const connect = require("../database/connect");
 
 const callBack = async (collectionName, callback) => {
   try {
-    const connected = await connect.connectDb()
-    const db = await connected.db()
+    const connected = await connect.connectDb();
+    const db = await connected.db();
     const collection = await db.collection(collectionName);
-    const response = await callback(collection)
+    const response = await callback(collection);
     await connected.close();
-    return response
+    return response;
   } catch (error) {
-    console.log(error)
-    throw error
+    console.log(error);
+    throw error;
   }
-}
+};
 
 const find = async (collection, query, sort = {}, limit = 100) => {
   try {
-    const response = await collection.find(query || {}).sort(sort).limit(limit).toArray();
+    const response = await collection
+      .find(query || {})
+      .sort(sort)
+      .limit(limit)
+      .toArray();
     return response;
   } catch (error) {
-    console.log(error)
-    throw error
+    console.log(error);
+    throw error;
   }
-}
+};
 
 const findOne = async (collection, query, sort = {}) => {
   try {
@@ -33,14 +37,13 @@ const findOne = async (collection, query, sort = {}) => {
 
     return response[0];
   } catch (error) {
-    console.log(error)
-    throw error
+    console.log(error);
+    throw error;
   }
-}
-
+};
 
 module.exports = {
   callBack,
   find,
-  findOne
-}
+  findOne,
+};

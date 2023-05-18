@@ -10,6 +10,7 @@ export type HttpResponse = {
 
 export enum HttpRequestMethodEnum {
   GET = 'GET',
+  DELETE = 'DELETE',
   POST = 'POST',
   PUT = 'PUT',
 }

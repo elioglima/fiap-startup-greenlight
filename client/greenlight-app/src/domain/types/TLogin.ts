@@ -3,16 +3,21 @@ export type TLoginUser = {
   data?: Date;
   email?: string;
   nome?: string;
+  token?: string;
+  refreshKey?: string;
 };
 
 export type TLoginRequest = {
-  rememberLogin: string;
+  rememberLogin: boolean;
   email: string;
   senha: string;
 };
 
 export type TLoginResponse = {
   user?: TLoginUser;
+  rememberLogin?: boolean;
+  email?: string;
+  senha?: string;
 };
 
 export type TLoginAccess = {
@@ -28,4 +33,6 @@ export type TLoginState = {
   response?: TLoginResponse;
   message?: string;
   error?: boolean;
+  routeRedirect?: string;
+  userTemp?: TLoginUser;
 };

@@ -51,6 +51,26 @@ const findOne = async (filter) => {
   }
 };
 
+const insert = async (value) => {
+  try {
+    const dataValue = parseValues(value);
+    if (!dataValue.titulo || !dataValue.data) {
+      return httpHelper.badRequest("Paramêtros inválidos");
+    }
+
+    const response = await utils.db.callBack(
+      collectionName,
+      async (collection) => {
+        return await collection.insertOne(dataValue);
+      }
+    );
+
+    return utils.returnDb.success(response);
+  } catch (error) {
+    return utils.returnDb.error(error.message || error.stack);
+  }
+};
+
 const update = async (filter, value) => {
   try {
     const params = filter || {};
@@ -63,26 +83,6 @@ const update = async (filter, value) => {
           },
           { $set: parseValues(value) }
         );
-      }
-    );
-
-    return utils.returnDb.success(response);
-  } catch (error) {
-    return utils.returnDb.error(error.message || error.stack);
-  }
-};
-
-const insert = async (value) => {
-  try {
-    const dataValue = parseValues(value);
-    if (!dataValue.titulo || !dataValue.data) {
-      return httpHelper.badRequest("Paramêtros inválidos");
-    }
-
-    const response = await utils.db.callBack(
-      collectionName,
-      async (collection) => {
-        return await collection.insertOne(dataValue);
       }
     );
 

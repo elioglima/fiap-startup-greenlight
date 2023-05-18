@@ -6,13 +6,13 @@ import {ButtomGo} from '@components/buttomGo';
 import {InputDefault} from '@components/inputDefault';
 import {SelectDefault} from '@components/selectDefault';
 
+import {TAppState} from '@app/store';
 import MapThumbnail from '@components/mapThumbnail';
 import {TStoreEventAddRequest} from '@domain/types/TStates';
 import {useDispatch, useSelector} from 'react-redux';
-import {TAppState} from '@app/store';
 
-import * as St from './styles';
 import {ActionEventAdd} from '@stores/event/store.event.add';
+import * as St from './styles';
 
 interface functionBoolean {
   (active: boolean): void;
@@ -48,7 +48,6 @@ export const ModalAddEvent = ({open, onClose}: props) => {
       ...data,
       usuarioId: login?.user?._id,
     };
-
     dispath(ActionEventAdd(dataRequest));
 
     // to-do: validacao

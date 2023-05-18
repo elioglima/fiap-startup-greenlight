@@ -1,5 +1,6 @@
 const utils = require("../utils");
 const db = require("../database");
+const moment = require("moment");
 
 const find = async ({ queryStringParameters }) => {
   try {
@@ -54,11 +55,12 @@ const find = async ({ queryStringParameters }) => {
   }
 };
 
-const update = async ({ queryStringParameters, body }) => {
+const update = async ({ queryParams, body }) => {
   try {
-    const params = queryStringParameters;
-    const value = JSON.parse(body);
-    const filter = { id: params?.codigo };
+    const params = queryParams;
+    const value = body;
+    const filter = { id: params?._id };
+
     const response = await db.user.update(filter, value);
     return utils.httpHelper.ok(response);
   } catch (error) {
@@ -89,6 +91,36 @@ const remove = async ({ queryStringParameters }) => {
   }
 };
 
+const createAuth = async ({ usuarioId }) => {
+  try {
+    const secretKey = await utils.dataController.encryptObject({
+      usuarioId,
+    });
+
+    const token = await utils.dataController.encryptObject(
+      {
+        usuarioId,
+        date: moment().add(10, "minute"),
+      },
+      secretKey
+    );
+
+    await update({
+      queryParams: { _id: usuarioId },
+      body: { token: token },
+    });
+
+    return {
+      usuarioId,
+      token,
+      refreshKey: secretKey,
+    };
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
+
 const login = async ({ body }) => {
   try {
     const { email, senha } = JSON.parse(body) || {};
@@ -98,20 +130,107 @@ const login = async ({ body }) => {
 
     const response = await db.user.login(email, senha);
 
-    if (!response) {
+    if (!response || !response.length) {
       return utils.httpHelper.notAuthorized();
     }
 
-    return utils.httpHelper.ok(response);
+    const usuarioId = response.data?._id;
+    const authentication = await createAuth({
+      usuarioId,
+    });
+
+    if (!authentication) {
+      return utils.httpHelper.notAuthorized();
+    }
+
+    return utils.httpHelper.ok({
+      ...response,
+      data: {
+        ...response.data,
+        token: authentication?.token,
+        refreshKey: authentication?.refreshKey,
+      },
+    });
   } catch (error) {
+    console.log(error);
     return utils.httpHelper.badRequest(error);
   }
 };
 
+const refresh = async ({ body }) => {
+  try {
+    if (!body) {
+      return utils.httpHelper.notAuthorized();
+    }
+
+    const { refreshKey, token } = JSON.parse(body);
+
+    if (!refreshKey || !token) {
+      return utils.httpHelper.notAuthorized();
+    }
+
+    const decodeToken = await utils.dataController.decryptObject(
+      token,
+      refreshKey
+    );
+
+    const now = moment();
+
+    if (now.isAfter(decodeToken.date)) {
+      return utils.httpHelper.notAuthorized();
+    }
+
+    const response = await db.user.findOne({
+      _id: decodeToken.usuarioId,
+    });
+
+    if (!response || !response.length) {
+      return utils.httpHelper.notAuthorized();
+    }
+
+    const responseLogin = await db.user.login(
+      response.data?.email,
+      response.data?.senha
+    );
+
+    if (!responseLogin || !responseLogin.length || !responseLogin.data?.token) {
+      await update({
+        queryParams: { _id: decodeToken.usuarioId },
+        body: { token: undefined },
+      });
+      return utils.httpHelper.notAuthorized();
+    }
+
+    const authentication = await createAuth({
+      usuarioId: responseLogin.data?.usuarioId,
+    });
+
+    if (!authentication) {
+      await update({
+        queryParams: { _id: responseLogin.data?.usuarioId },
+        body: { token: undefined },
+      });
+      return utils.httpHelper.notAuthorized();
+    }
+
+    return utils.httpHelper.ok({
+      ...responseLogin,
+      data: {
+        ...responseLogin.data,
+        token: authentication?.token,
+        refreshKey: authentication?.refreshKey,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return utils.httpHelper.badRequest(error);
+  }
+};
 module.exports = {
   find,
   insert,
   update,
   remove,
   login,
+  refresh,
 };

@@ -1,7 +1,11 @@
 const success = async (data) => {
   return {
     error: false,
-    ... !data ? {} : Array.isArray(data) ? { length: data.length, data: data } : { lenght: 1, data },
+    ...(!data
+      ? {}
+      : Array.isArray(data)
+      ? { length: data.length, data: data }
+      : { length: 1, data }),
   };
 };
 
@@ -10,8 +14,8 @@ const notFound = async (message) => {
     error: false,
     length: 0,
     record: undefined,
-    ...message ? { message } : {},
-    message
+    ...(message ? { message } : {}),
+    message,
   };
 };
 
@@ -20,10 +24,9 @@ const notAuthorized = async () => {
     error: false,
     length: 0,
     record: undefined,
-    message: 'Not authorized'
+    message: "Not authorized",
   };
 };
-
 
 const error = async (message) => {
   return {
@@ -36,5 +39,5 @@ module.exports = {
   success,
   notFound,
   error,
-  notAuthorized
-}
+  notAuthorized,
+};

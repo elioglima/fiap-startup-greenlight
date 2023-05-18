@@ -4,12 +4,13 @@ import {persistReducer, persistStore} from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import {all, takeEvery} from 'redux-saga/effects';
 
-import {loginRootReducers, loginRootSagas} from '../stores/store.login';
-import {historyRootReducers} from '../stores/store.history';
 import {categoryRootReducers, categoryRootSagas} from '@stores/store.service.category';
+import {loginRootReducers, loginRootSagas} from '../stores/login/store.login';
+import {historyRootReducers} from '../stores/store.history';
 
-import {eventListRootReducers, eventListRootSagas} from '@stores/event/store.event.list';
 import {eventAddRootReducers, eventAddRootSagas} from '@stores/event/store.event.add';
+import {eventDeleteRootReducers, eventDeleteRootSagas} from '@stores/event/store.event.delete';
+import {eventListRootReducers, eventListRootSagas} from '@stores/event/store.event.list';
 
 export function* rootSaga() {
   yield all([
@@ -17,6 +18,7 @@ export function* rootSaga() {
     ...categoryRootSagas.map(f => takeEvery(f.name, f.data)),
     ...eventListRootSagas.map(f => takeEvery(f.name, f.data)),
     ...eventAddRootSagas.map(f => takeEvery(f.name, f.data)),
+    ...eventDeleteRootSagas.map(f => takeEvery(f.name, f.data)),
   ]);
 }
 
@@ -26,6 +28,7 @@ const rootReducer = combineReducers({
   ...categoryRootReducers,
   ...eventListRootReducers,
   ...eventAddRootReducers,
+  ...eventDeleteRootReducers,
 });
 
 const persistConfig = {

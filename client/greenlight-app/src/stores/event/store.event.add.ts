@@ -1,12 +1,11 @@
-import {call, put} from 'redux-saga/effects';
 import * as eventService from '@service/eventService';
+import {call} from 'redux-saga/effects';
 
 import {
   TStoreEventAddRequest,
   TStoreEventAddResponse,
   TStoreEventAddState,
 } from '@domain/types/TStates';
-import {pushHistory} from '@stores/store.history';
 
 const name = 'API-EVENT-ADD';
 
@@ -96,7 +95,6 @@ export const ActionEventAddError = (message: string, response: TStoreEventAddRes
 
 function* eventAddSagas(dataStore: TEventAddAction): Generator<any> {
   const request = dataStore.request;
-
   try {
     if (!request) {
       // aplicar erro

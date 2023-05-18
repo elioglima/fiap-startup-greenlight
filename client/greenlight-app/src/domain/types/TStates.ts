@@ -37,6 +37,7 @@ export type TStoreEventListState = {
 };
 
 export type TStoreEventAddRequest = {
+  id: string;
   usuarioId: string;
   categoryId: string;
   title: string;
@@ -47,7 +48,7 @@ export type TStoreEventAddRequest = {
 
 export type TStoreEventAddResponse = {
   error: boolean;
-  lenght: number;
+  length: number;
   data: any;
 };
 
@@ -59,4 +60,24 @@ export type TStoreEventAddState = {
   error?: boolean;
   request?: TStoreEventAddRequest;
   response?: TStoreEventAddResponse;
+};
+
+export type TStoreEventDeleteRequest = {
+  id: string;
+};
+
+export type TStoreEventDeleteResponse = {
+  error: boolean;
+  length: number;
+  data: any;
+};
+
+export type TStoreEventDeleteState = {
+  type?: string;
+  loading: boolean;
+  loaded: boolean;
+  message?: any;
+  error?: boolean;
+  request?: TStoreEventDeleteRequest;
+  response?: TStoreEventDeleteResponse;
 };

@@ -64,10 +64,13 @@ const update = async ({ queryStringParameters, body }) => {
 
 const insert = async ({ body }) => {
   try {
+    console.log(1211131, body);
     const value = JSON.parse(body);
+    console.log(value);
     const response = await db.event.insert(value);
     return httpHelper.ok(response);
   } catch (error) {
+    console.log(error);
     return httpHelper.badRequest(error);
   }
 };
