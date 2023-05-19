@@ -1,10 +1,10 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
 import IconArrowSVG from '@components/svg/IconArrowSVG';
-import * as St from './styles';
-import {useDispatch} from 'react-redux';
 import {pushHistory} from '@stores/store.history';
+import {useDispatch} from 'react-redux';
+import * as St from './styles';
 
 interface props {
   title?: string;
@@ -12,12 +12,12 @@ interface props {
   iconRight?: any;
 }
 
-export const BaseHeader = ({backRoute, title, iconRight}: props) => {
+export const BaseHeader = ({backRoute, title, iconRight = <></>}: props) => {
   const dispath = useDispatch();
-
+  const check = backRoute || title || iconRight;
   return (
     <St.BaseHeader>
-      {(backRoute || title || iconRight) && (
+      {check && (
         <>
           <St.BackRoute>
             {backRoute && (
@@ -30,7 +30,6 @@ export const BaseHeader = ({backRoute, title, iconRight}: props) => {
                         route: backRoute,
                       }),
                     );
-                    // navigation && navigation.navigate(backRoute);
                     return;
                   }
 
@@ -41,9 +40,9 @@ export const BaseHeader = ({backRoute, title, iconRight}: props) => {
                 </St.BackRouteAction>
               </TouchableOpacity>
             )}
-            <St.Title>{title && title}</St.Title>
+            <St.Title>{title || ''}</St.Title>
           </St.BackRoute>
-          <St.IconRight>{iconRight ? iconRight : () => <Text />}</St.IconRight>
+          <St.IconRight>{iconRight && iconRight}</St.IconRight>
         </>
       )}
     </St.BaseHeader>

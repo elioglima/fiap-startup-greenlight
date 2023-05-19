@@ -113,8 +113,6 @@ const reduceLogin = (state = initialState, payload: Action) => {
   }
 };
 
-export const loginRootReducers = {login: reduceLogin};
-
 function* loginSagas(dataStore: Action): Generator<any> {
   const request: TLoginRequest | undefined = dataStore.data?.request;
   if (!request) {
@@ -180,6 +178,7 @@ function* loginRefreshSagas(dataStore: Action): Generator<any> {
   return;
 }
 
+export const loginRootReducers = {login: reduceLogin};
 export const loginRootSagas = [
   {name: EActionTypeLogin.login, data: loginSagas},
   {name: EActionTypeLogin.refresh, data: loginRefreshSagas},

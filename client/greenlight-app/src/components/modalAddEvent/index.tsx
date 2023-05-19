@@ -11,27 +11,21 @@ import MapThumbnail from '@components/mapThumbnail';
 import {TStoreEventAddRequest} from '@domain/types/TStates';
 import {useDispatch, useSelector} from 'react-redux';
 
+import {functionBoolean, functionVoid} from '@domain/interfaces/IFunctions';
 import {ActionEventAdd} from '@stores/event/store.event.add';
 import * as St from './styles';
 
-interface functionBoolean {
-  (active: boolean): void;
-}
-
-interface functionVoid {
-  (): void;
-}
-
 interface props {
-  open: boolean;
-  onClose: functionVoid;
-  setOpenAddItem: functionBoolean;
+  open?: boolean;
+  onClose?: functionVoid;
+  setOpenAddItem?: functionBoolean;
 }
 
 export const ModalAddEvent = ({open, onClose}: props) => {
   const dispath = useDispatch();
   const login = useSelector((state: TAppState) => state.login.response);
-  const category = useSelector((state: TAppState) => state.serviceCategory.response?.rows || []);
+  const stateCategory = useSelector((state: TAppState) => state.category.response?.rows || []);
+  // const states = useSelector((state: TAppState) => state.serviceEventAdd || []);
 
   const {control, formState, handleSubmit, setValue} = useForm({
     defaultValues: {
@@ -39,7 +33,7 @@ export const ModalAddEvent = ({open, onClose}: props) => {
       date: new Date().toISOString(),
       time: '19h:15',
       location: 'Rua Abadiania 832b',
-      categoryId: '6464d17fe282cbb0245112f8',
+      categoriaId: '6464d17fe282cbb0245112f8',
     },
   });
 
@@ -47,10 +41,11 @@ export const ModalAddEvent = ({open, onClose}: props) => {
     const dataRequest: TStoreEventAddRequest = {
       ...data,
       usuarioId: login?.user?._id,
+      isLoadevents: true,
     };
     dispath(ActionEventAdd(dataRequest));
+    onClose && onClose();
 
-    // to-do: validacao
     // const response = await serviceAddEvent(dataRequest);
     // if (response) {
     //   onClose && onClose();
@@ -82,11 +77,11 @@ export const ModalAddEvent = ({open, onClose}: props) => {
             <St.FormRow>
               <St.FormInput style={{width: '100%'}}>
                 <SelectDefault
-                  name={'categoryId'}
+                  name={'categoriaId'}
                   placeholder={'informe o titulo'}
                   control={control}
                   formState={formState}
-                  data={category}
+                  data={stateCategory}
                 />
               </St.FormInput>
             </St.FormRow>

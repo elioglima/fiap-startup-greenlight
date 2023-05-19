@@ -1,17 +1,41 @@
 import {envConfig} from '@configs/envConfig';
+import {TListEventAPIResponse, TListEventCountAPIResponse} from '@domain/types/TAPIListEvent';
 import {HttpOptions, HttpResponse} from '@domain/types/THttp';
-import {TListItems} from '@domain/types/TListItems';
 import {
   TStoreEventAddRequest,
   TStoreEventAddResponse,
+  TStoreEventListCountRequest,
   TStoreEventListRequest,
 } from '@domain/types/TStates';
-import {deleteRequest, getRequest, putRequest} from '@utils/service.https';
+import {deleteRequest, getRequest, postRequest} from '@utils/service.https';
+
+export const listEventCount = async ({
+  usuarioId,
+  categoriaId,
+}: TStoreEventListCountRequest): Promise<TListEventCountAPIResponse[] | undefined> => {
+  const envs = await envConfig();
+  const options: HttpOptions = {
+    path: `${envs.API_URL}/evento/contagem`,
+  };
+
+  const params = {
+    ...(usuarioId ? {usuarioId} : {}),
+    ...(categoriaId ? {categoriaId} : {}),
+  };
+
+  const response: HttpResponse = await getRequest(options, params);
+
+  if (response.err) {
+    return undefined;
+  }
+  const data = response.data;
+  return data || [];
+};
 
 export const listEvent = async ({
   usuarioId,
-  categoryId,
-}: TStoreEventListRequest): Promise<TListItems[] | undefined> => {
+  categoriaId,
+}: TStoreEventListRequest): Promise<TListEventAPIResponse[] | undefined> => {
   const envs = await envConfig();
   const options: HttpOptions = {
     path: `${envs.API_URL}/evento`,
@@ -19,7 +43,7 @@ export const listEvent = async ({
 
   const params = {
     ...(usuarioId ? {usuarioId} : {}),
-    ...(categoryId ? {categoryId} : {}),
+    ...(categoriaId ? {categoriaId} : {}),
     limit: 20,
   };
 
@@ -29,25 +53,7 @@ export const listEvent = async ({
     return undefined;
   }
   const data = response.data;
-  return data
-    ? data.map(
-        (d: {
-          _id: string;
-          titulo: string;
-          descricao: string;
-          data: Date;
-          horaInicio: string;
-          foto: string;
-          participantes: any;
-        }) => ({
-          id: d._id,
-          title: d.titulo,
-          date: d.data,
-          timeStart: d.horaInicio,
-          photoDataBase64: d.foto,
-        }),
-      )
-    : [];
+  return data || [];
 };
 
 export const addEvent = async (
@@ -61,14 +67,14 @@ export const addEvent = async (
 
   const dataAPI = {
     usuarioId: dataRequest.usuarioId,
-    categoryId: dataRequest.categoryId,
+    categoriaId: dataRequest.categoriaId,
     data: dataRequest.date,
     local: dataRequest.location,
     tempo: dataRequest.time,
     titulo: dataRequest.title,
   };
 
-  const response: HttpResponse = await putRequest(options, dataAPI);
+  const response: HttpResponse = await postRequest(options, dataAPI);
   return response?.data;
 };
 

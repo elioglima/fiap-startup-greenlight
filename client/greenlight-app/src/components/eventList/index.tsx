@@ -30,6 +30,7 @@ export const EventList: React.FC<PropStateEventList> = ({items, onPressEdit, set
               <St.Logo />
             </St.ColPhoto>
             <St.ColTitle>
+              <St.Title>{item.category.description}</St.Title>
               <St.Title>{item.title}</St.Title>
               <St.Row>
                 <IconSmallCalendarSVG />

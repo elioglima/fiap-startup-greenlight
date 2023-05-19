@@ -1,11 +1,12 @@
 import * as eventService from '@service/eventService';
-import {call} from 'redux-saga/effects';
+import {call, put} from 'redux-saga/effects';
 
 import {
   TStoreEventAddRequest,
   TStoreEventAddResponse,
   TStoreEventAddState,
 } from '@domain/types/TStates';
+import {ActionEventList} from '@stores/event/store.event.list';
 
 const name = 'API-EVENT-ADD';
 
@@ -75,8 +76,6 @@ const serviceEventAdd = (state = initialState, payload: TEventAddAction) => {
   }
 };
 
-export const eventAddRootReducers = {serviceEventAdd};
-
 export const ActionEventAdd = (request?: TStoreEventAddRequest) => ({
   type: EActionTypeEventAdd.execute,
   request,
@@ -95,6 +94,7 @@ export const ActionEventAddError = (message: string, response: TStoreEventAddRes
 
 function* eventAddSagas(dataStore: TEventAddAction): Generator<any> {
   const request = dataStore.request;
+
   try {
     if (!request) {
       // aplicar erro
@@ -102,20 +102,29 @@ function* eventAddSagas(dataStore: TEventAddAction): Generator<any> {
     }
 
     const response: any = yield call(eventService.addEvent, request);
-    console.log(response);
-    // if (!response.error) {
-    //   yield put(ActionEventAddSuccess(response));
-    //   yield put(
-    //     pushHistory({
-    //       route: '/EventView',
-    //       data: response,
-    //     }),
-    //   );
-    // }
+    yield new Promise(resolve => setTimeout(() => resolve(true), 1000));
+
+    if (!response.error) {
+      yield put(ActionEventAddSuccess(response));
+      if (request?.isLoadevents) {
+        yield put(
+          ActionEventList({
+            usuarioId: dataStore.request?.usuarioId || '-1',
+            categoriaId: undefined,
+          }),
+        );
+      }
+
+      return;
+    }
+
+    // modal de erro
+    // yield put(showModaLoading({title: 'Aguarde', description: 'Processando dados...'}));
   } catch (error) {
     console.log(error);
   }
   return;
 }
 
+export const eventAddRootReducers = {eventAdd: serviceEventAdd};
 export const eventAddRootSagas = [{name: EActionTypeEventAdd.execute, data: eventAddSagas}];

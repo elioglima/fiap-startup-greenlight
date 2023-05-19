@@ -5,6 +5,10 @@ export const BaseHeader = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #cbcbcb;
+  margin-bottom: 8px;
 `;
 
 export const BackRoute = styled.View`

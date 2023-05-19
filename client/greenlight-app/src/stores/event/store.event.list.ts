@@ -1,50 +1,21 @@
-import {call, put} from 'redux-saga/effects';
 import * as eventService from '@service/eventService';
+import {call, put} from 'redux-saga/effects';
 
+import {TListEventAPIResponse} from '@domain/types/TAPIListEvent';
+import {TListItems} from '@domain/types/TListItems';
 import {
+  EStoreActionTypeEventList,
   TStoreEventListRequest,
   TStoreEventListResponse,
   TStoreEventListState,
+  eventListStateInitial,
 } from '@domain/types/TStates';
+import {showModaLoading} from '@stores/modals/store.modal.loading';
 import {pushHistory} from '@stores/store.history';
 
-const name = 'API-EVENT-LIST';
-
-export enum EActionTypeEventList {
-  execute = `${name}_EXECUTE`,
-  success = `${name}_SUCCESS`,
-  error = `${name}_ERROR`,
-}
-
-const initialState: TStoreEventListState = {
-  loading: false,
-  loaded: false,
-  message: undefined,
-  error: false,
-};
-
-type TEventListAction =
-  | {
-      type: EActionTypeEventList.execute;
-      request?: TStoreEventListRequest;
-      response?: TStoreEventListResponse;
-    }
-  | {
-      type: EActionTypeEventList.success;
-      request?: TStoreEventListRequest;
-      response?: TStoreEventListResponse;
-      message?: string;
-    }
-  | {
-      type: EActionTypeEventList.error;
-      request?: TStoreEventListRequest;
-      response?: TStoreEventListResponse;
-      message?: string;
-    };
-
-const serviceEventList = (state = initialState, payload: TEventListAction) => {
+const serviceEventList = (state = eventListStateInitial, payload: TStoreEventListState) => {
   switch (payload.type) {
-    case EActionTypeEventList.execute:
+    case EStoreActionTypeEventList.execute:
       return {
         ...state,
         request: payload.request,
@@ -52,7 +23,7 @@ const serviceEventList = (state = initialState, payload: TEventListAction) => {
         loaded: false,
         loading: true,
       };
-    case EActionTypeEventList.success:
+    case EStoreActionTypeEventList.success:
       return {
         ...state,
         response: payload.response,
@@ -61,7 +32,7 @@ const serviceEventList = (state = initialState, payload: TEventListAction) => {
         loading: false,
       };
 
-    case EActionTypeEventList.error:
+    case EStoreActionTypeEventList.error:
       return {
         ...state,
         response: payload.response,
@@ -76,43 +47,63 @@ const serviceEventList = (state = initialState, payload: TEventListAction) => {
   }
 };
 
-export const eventListRootReducers = {serviceEventList};
-
 export const ActionEventList = (request?: TStoreEventListRequest) => ({
-  type: EActionTypeEventList.execute,
+  type: EStoreActionTypeEventList.execute,
   request,
 });
 
 export const ActionEventListSuccess = (response: TStoreEventListResponse) => ({
-  type: EActionTypeEventList.success,
+  type: EStoreActionTypeEventList.success,
   response,
 });
 
 export const ActionEventListError = (message: string, response: TStoreEventListResponse) => ({
-  type: EActionTypeEventList.error,
+  type: EStoreActionTypeEventList.error,
   response,
   message,
 });
 
-function* eventListSagas(dataStore: TEventListAction): Generator<any> {
+function* eventListSagas(dataStore: TStoreEventListState): Generator<any> {
   const request: TStoreEventListRequest | undefined = dataStore.request;
 
   try {
-    const rows: any = yield call(eventService.listEvent, request || {});
-    console.log(111, rows);
-    if (rows) {
-      yield put(ActionEventListSuccess({rows: rows || []}));
+    const rowsAPI: any = yield call(eventService.listEvent, request || {});
+    const rows: TListItems[] = rowsAPI
+      ? rowsAPI.map((d: TListEventAPIResponse) => ({
+          id: d._id,
+          title: d.titulo,
+          date: d.data,
+          timeStart: d.tempo,
+          photoDataBase64: d.fotoB64,
+          category: {
+            id: d.categoria?._id,
+            description: d.categoria?.titulo,
+          },
+        }))
+      : [];
+
+    if (rows.length === 0) {
+      yield put(showModaLoading({title: 'Ops,', description: 'Nenhum evento localizado....'}));
       yield put(
         pushHistory({
-          route: '/EventView',
+          route: '/HomeLogged',
           data: rows,
         }),
       );
+      return;
     }
+    yield put(ActionEventListSuccess({rows: rows || []}));
+    yield put(
+      pushHistory({
+        route: '/EventView',
+        data: rows,
+      }),
+    );
   } catch (error) {
     console.log(error);
   }
   return;
 }
 
-export const eventListRootSagas = [{name: EActionTypeEventList.execute, data: eventListSagas}];
+export const eventListRootReducers = {eventList: serviceEventList};
+export const eventListRootSagas = [{name: EStoreActionTypeEventList.execute, data: eventListSagas}];

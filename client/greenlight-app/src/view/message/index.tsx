@@ -6,8 +6,6 @@ import * as St from './styles';
 const MessageView = () => {
   const state: any = undefined;
 
-  console.log(JSON.stringify(state, null, 4));
-
   return (
     <>
       <St.ContainerBase />

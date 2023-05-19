@@ -2,46 +2,15 @@ import * as eventService from '@service/eventService';
 import {call, put} from 'redux-saga/effects';
 
 import {
+  EActionTypeEventDelete,
+  TEventDeleteState,
   TStoreEventDeleteRequest,
   TStoreEventDeleteResponse,
-  TStoreEventDeleteState,
+  eventDeleteStateInitialState,
 } from '@domain/types/TStates';
+import {ActionEventList} from '@stores/event/store.event.list';
 
-const name = 'API-EVENT-ADD';
-
-export enum EActionTypeEventDelete {
-  execute = `${name}_EXECUTE`,
-  success = `${name}_SUCCESS`,
-  error = `${name}_ERROR`,
-}
-
-const initialState: TStoreEventDeleteState = {
-  loading: false,
-  loaded: false,
-  message: undefined,
-  error: false,
-};
-
-type TEventAddAction =
-  | {
-      type: EActionTypeEventDelete.execute;
-      request?: TStoreEventDeleteRequest;
-      response?: TStoreEventDeleteResponse;
-    }
-  | {
-      type: EActionTypeEventDelete.success;
-      request?: TStoreEventDeleteRequest;
-      response?: TStoreEventDeleteResponse;
-      message?: string;
-    }
-  | {
-      type: EActionTypeEventDelete.error;
-      request?: TStoreEventDeleteRequest;
-      response?: TStoreEventDeleteResponse;
-      message?: string;
-    };
-
-const serviceEventDelete = (state = initialState, payload: TEventAddAction) => {
+const serviceEventDelete = (state = eventDeleteStateInitialState, payload: TEventDeleteState) => {
   switch (payload.type) {
     case EActionTypeEventDelete.execute:
       return {
@@ -75,8 +44,6 @@ const serviceEventDelete = (state = initialState, payload: TEventAddAction) => {
   }
 };
 
-export const eventDeleteRootReducers = {serviceEventDelete};
-
 export const ActionEventDelete = (request?: TStoreEventDeleteRequest) => ({
   type: EActionTypeEventDelete.execute,
   request,
@@ -93,7 +60,7 @@ export const ActionEventDeleteError = (message: string, response: TStoreEventDel
   message,
 });
 
-function* eventDeleteSagas(dataStore: TEventAddAction): Generator<any> {
+function* eventDeleteSagas(dataStore: TEventDeleteState): Generator<any> {
   const request: any = {
     id: dataStore.request?.id,
   };
@@ -105,15 +72,24 @@ function* eventDeleteSagas(dataStore: TEventAddAction): Generator<any> {
     }
 
     const response: any = yield call(eventService.deleteEvent, request);
+
     if (!response.error) {
       yield put(ActionEventDeleteSuccess(response));
     }
+
+    yield put(
+      ActionEventList({
+        usuarioId: dataStore.request?.usuarioId || '-1',
+        categoriaId: undefined,
+      }),
+    );
   } catch (error) {
     console.log(error);
   }
   return;
 }
 
+export const eventDeleteRootReducers = {eventDelete: serviceEventDelete};
 export const eventDeleteRootSagas = [
   {name: EActionTypeEventDelete.execute, data: eventDeleteSagas},
 ];

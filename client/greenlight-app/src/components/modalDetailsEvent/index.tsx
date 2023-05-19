@@ -1,6 +1,4 @@
-import moment from 'moment';
-import React, {useEffect} from 'react';
-import {TouchableOpacity} from 'react-native';
+import React from 'react';
 
 import {TAppState} from '@app/store';
 import {BaseHeader} from '@components/baseHeader';
@@ -12,6 +10,8 @@ import IconTaskEditItemsSVG from '@components/svg/IconTaskEditItemsSVG';
 import {EColors} from '@domain/enum/EColors';
 import {TListItems} from '@domain/types/TListItems';
 import {ActionEventDelete} from '@stores/event/store.event.delete';
+import moment from 'moment';
+import {TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as St from './styles';
 
@@ -28,11 +28,7 @@ interface props {
 
 export const ModalDetailsEvent = ({open, onClose, item, setOpenAddItem}: props) => {
   const dispath = useDispatch();
-  const serviceEventDelete = useSelector((state: TAppState) => state.serviceEventDelete);
-
-  useEffect(() => {
-    console.log(serviceEventDelete);
-  }, [serviceEventDelete]);
+  const stateLogin = useSelector((state: TAppState) => state.login);
 
   if (!open && !item) {
     return <></>;
@@ -73,7 +69,13 @@ export const ModalDetailsEvent = ({open, onClose, item, setOpenAddItem}: props) 
           <St.Col>
             <TouchableOpacity
               onPress={() => {
-                dispath(ActionEventDelete({id: item?.id || ''}));
+                onClose && onClose();
+                dispath(
+                  ActionEventDelete({
+                    id: item?.id || '',
+                    usuarioId: stateLogin.response?.user?._id,
+                  }),
+                );
               }}>
               <IconTaskEditItemsSVG />
             </TouchableOpacity>

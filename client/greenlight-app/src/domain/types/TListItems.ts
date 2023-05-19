@@ -4,4 +4,8 @@ export type TListItems = {
   date: Date;
   timeStart: string;
   photoDataBase64: string;
+  category: {
+    id: string;
+    description: string;
+  };
 };

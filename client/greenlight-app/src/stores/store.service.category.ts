@@ -1,12 +1,11 @@
-import {call, put} from 'redux-saga/effects';
 import * as categoryService from '@service/categoryService';
+import {call, put} from 'redux-saga/effects';
 
 import {
   TStoreCategoryRequest,
   TStoreCategoryResponse,
   TStoreCategoryState,
 } from '@domain/types/TStates';
-import {pushHistory} from '@stores/store.history';
 
 const name = 'API-CATEGORY';
 
@@ -76,8 +75,6 @@ const serviceCategory = (state = initialState, payload: TCategoryAction) => {
   }
 };
 
-export const categoryRootReducers = {serviceCategory};
-
 export const ActionCategory = (request?: TStoreCategoryRequest) => ({
   type: EActionTypeCategory.execute,
   request,
@@ -108,4 +105,5 @@ function* categorySagas(dataStore: TCategoryAction): Generator<any> {
   return;
 }
 
+export const categoryRootReducers = {category: serviceCategory};
 export const categoryRootSagas = [{name: EActionTypeCategory.execute, data: categorySagas}];

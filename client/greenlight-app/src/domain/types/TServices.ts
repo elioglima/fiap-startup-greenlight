@@ -1,6 +1,6 @@
 export type TAddEvent = {
   usuarioId: string;
-  categoryId: string;
+  categoriaId: string;
   title: string;
   date: string;
   time: string;

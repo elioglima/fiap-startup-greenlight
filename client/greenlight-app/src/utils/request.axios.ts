@@ -11,7 +11,7 @@ export default async (options: HttpOptions, data?: any): Promise<HttpResponse> =
       ...options,
       headers: {
         'content-type': 'application/json',
-        // ...(options.headers ? options.headers : {}),
+        ...(options.headers ? options.headers : {}),
       },
     };
 

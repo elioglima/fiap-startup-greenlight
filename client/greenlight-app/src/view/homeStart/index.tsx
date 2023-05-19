@@ -1,21 +1,18 @@
 import React, {useState} from 'react';
 
-import {TAppState} from '@app/store';
 import {ButtomGo} from '@components/buttomGo';
 import ControllerApp from '@components/controllerApp';
 import HomeHeader from '@components/homeHeader';
 import {LoadApp} from '@components/loadApp';
 import {ModalButtomLogin} from '@components/modalButtomLogin';
-import {TLoginState} from '@domain/types/TLogin';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import * as St from './styles';
 
 const HomeView = () => {
   const [optIn, setOptIn] = useState(false);
   const dispath = useDispatch();
 
-  const stateLogin: TLoginState = useSelector((state: TAppState) => state.login);
-
+  // const stateLogin: TLoginState = useSelector((state: TAppState) => state.login);
   // useEffect(() => {
   //   console.log(2222, stateLogin);
   //   dispath(ActionLoginRefresh({routeRedirect: '/HomeLogged'}, stateLogin));
