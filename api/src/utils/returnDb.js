@@ -1,11 +1,11 @@
-const success = async (data) => {
+const success = async (data, length) => {
   return {
     error: false,
     ...(!data
       ? {}
       : Array.isArray(data)
       ? { length: data.length, data: data }
-      : { length: 1, data }),
+      : { length: length || 1, data }),
   };
 };
 

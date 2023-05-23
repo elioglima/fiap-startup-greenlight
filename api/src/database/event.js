@@ -15,6 +15,8 @@ const parseValues = (values) => {
     ...(values.local ? { local: values.local } : {}),
     ...(values.data ? { data: new Date(values.data) } : {}),
     ...(values.tempo ? { tempo: values.tempo } : {}),
+    ...(values.fotoBase64 ? { fotoBase64: values.fotoBase64 } : {}),
+    
   };
 };
 
@@ -44,6 +46,22 @@ const find = async (filter, limit) => {
     );
 
     return utils.returnDb.success(response);
+  } catch (error) {
+    return utils.returnDb.error(error.message || error.stack);
+  }
+};
+
+const findCount = async (filter) => {
+  try {
+    const params = filter || {};
+    const response = await utils.db.callBack(
+      collectionName,
+      async (collection) => {
+        return await utils.db.count(collection, queryMount(params), { id: 1 });
+      }
+    );
+
+    return utils.returnDb.success(response, parseInt(response));
   } catch (error) {
     return utils.returnDb.error(error.message || error.stack);
   }
@@ -127,7 +145,7 @@ const update = async (filter, value) => {
 const remove = async (id) => {
   try {
     if (!id) {
-      return utils.httpHelper.notFound();
+      return utils.returnDb.error('Registers not found');
     }
 
     const response = await utils.db.callBack(
@@ -146,6 +164,7 @@ const remove = async (id) => {
 module.exports = {
   find,
   findOne,
+  findCount,
   insert,
   update,
   remove,

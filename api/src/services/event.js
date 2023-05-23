@@ -7,6 +7,7 @@ const find = async ({ queryStringParameters }) => {
     const query = {
       ...(params.id ? { id: params?.id } : {}),
       ...(params.usuarioId ? { usuarioId: params?.usuarioId } : {}),
+      ...(params.categoriaId ? { categoriaId: params?.categoriaId } : {}),
     };
     const response = await db.event.find(query);
     const list = response.data || [];
@@ -16,13 +17,15 @@ const find = async ({ queryStringParameters }) => {
           eventoId: m.id,
         });
         const userData = await db.user.findOne({ id: m.usuarioId });
+        const categoryData = await db.category.findOne({
+          id: m.categoriaId,
+        });
 
         delete m.eventoId;
         delete m.usuarioId;
         const participantes = await Promise.all(
           eventParticipantData.data.map(async (ev) => {
             const userData = await db.user.findOne({ id: ev.usuarioId });
-            console.log(2222, userData);
 
             if (ev?.eventoId) delete ev.eventoId;
             if (userData?.data?._id) delete userData.data._id;
@@ -38,6 +41,7 @@ const find = async ({ queryStringParameters }) => {
         return {
           ...m,
           usuario: userData.data,
+          categoria: categoryData.data,
           participantes,
         };
       })
@@ -50,9 +54,9 @@ const find = async ({ queryStringParameters }) => {
   }
 };
 
-const update = async ({ queryStringParameters, body }) => {
+const update = async ({ query, body }) => {
   try {
-    const params = queryStringParameters;
+    const params = query;
     const value = JSON.parse(body);
     const filter = { id: params?.id };
     const response = await db.event.update(filter, value);
@@ -64,9 +68,7 @@ const update = async ({ queryStringParameters, body }) => {
 
 const insert = async ({ body }) => {
   try {
-    console.log(1211131, body);
     const value = JSON.parse(body);
-    console.log(value);
     const response = await db.event.insert(value);
     return httpHelper.ok(response);
   } catch (error) {
@@ -88,8 +90,24 @@ const remove = async ({ queryStringParameters }) => {
   }
 };
 
+const findCount = async ({ queryStringParameters, body }) => {
+  try {
+    const params = queryStringParameters || {};
+    const query = {
+      ...(params.id ? { id: params?.id } : {}),
+      ...(params.usuarioId ? { usuarioId: params?.usuarioId } : {}),
+      ...(params.categoriaId ? { categoriaId: params?.categoriaId } : {}),
+    };
+    const response = await db.event.findCount(query);
+    return httpHelper.ok(response);
+  } catch (error) {
+    return httpHelper.badRequest(error);
+  }
+};
+
 module.exports = {
   find,
+  findCount,
   insert,
   update,
   remove,

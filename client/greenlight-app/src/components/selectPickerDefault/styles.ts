@@ -7,7 +7,6 @@ export const Container = styled.View`
   background-color: #fff;
   border-color: #7000ad;
   border-width: 1px;
-  padding: 15px;
 `;
 
 export const LabelBase = styled.View`

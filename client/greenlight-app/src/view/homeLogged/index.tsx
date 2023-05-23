@@ -6,11 +6,12 @@ import ControllerApp from '@components/controllerApp';
 import HomeLoggedHeader from '@components/homeLoggedHeader';
 import HorizontalMenu from '@components/horizontalMenu';
 import {LoadApp} from '@components/loadApp';
-import MapThumbnail from '@components/mapThumbnail';
+import MapScreen from '@components/mapScreen';
 import {IconCalendarAddSVG} from '@components/svg/IconCalendarAddSVG';
 import {IconCalendarSVG} from '@components/svg/IconCalendarSVG';
 import {TMenuItem} from '@domain/types/TMenuItem';
 import {TStoreEventListCountState} from '@domain/types/TStates';
+import {TStoreConfigsState} from '@domain/types/states/TStatesConfigs';
 import {ActionEventListCount} from '@stores/event/store.event.count';
 import {ActionEventList} from '@stores/event/store.event.list';
 import {ActionLoginRefresh} from '@stores/login/store.login';
@@ -25,6 +26,7 @@ const HomeView = () => {
   const dispath = useDispatch();
   const category = useSelector((state: TAppState) => state.category);
   const stateLogin = useSelector((state: TAppState) => state.login);
+  const stateConfigs: TStoreConfigsState = useSelector((state: TAppState) => state.configs);
   const eventListCount: TStoreEventListCountState = useSelector(
     (state: TAppState) => state.eventListCount,
   );
@@ -61,7 +63,9 @@ const HomeView = () => {
             <St.Box>
               <St.Title>PROXIMO EVENTO</St.Title>
             </St.Box>
-            <MapThumbnail />
+            <St.MapScreen>
+              <MapScreen region={stateConfigs.data?.region} />
+            </St.MapScreen>
             <St.ButtomRow>
               <TouchableOpacity
                 onPress={async () => {

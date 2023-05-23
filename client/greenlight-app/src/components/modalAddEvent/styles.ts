@@ -13,16 +13,11 @@ export const Container = styled.View`
   display: flex;
   flex-direction: column;
   position: absolute;
-  bottom: 0px;
+  top: 0;
   background-color: #fff;
   width: 100%;
+  height: 100%;
   z-index: 1001;
-  border-width: 0;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-  border-top-style: solid;
-  border-top-color: #c7c7c7;
-  border-top-width: 1px;
 `;
 
 export const TitleBase = styled.View`
@@ -64,6 +59,7 @@ export const BaseClose = styled.View`
 
 export const BaseHeader = styled.View`
   display: flex;
+  margin-top: 50px;
 `;
 
 export const Row = styled.View`
@@ -118,10 +114,20 @@ export const Maps = styled.View`
 
 export const Buttons = styled.View`
   display: flex;
+  position: absolute;
+  bottom: 0;
   width: 94%;
-  margin: 0px 10px 35px 10px;
+  margin: 15px 10px 0px 10px;
   flex-direction: row;
   justify-content: center;
+`;
+
+export const ImageDefault = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
 `;
 
 export const FormBase = styled.View`

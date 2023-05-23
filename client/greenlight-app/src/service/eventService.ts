@@ -72,9 +72,11 @@ export const addEvent = async (
     local: dataRequest.location,
     tempo: dataRequest.time,
     titulo: dataRequest.title,
+    fotoBase64: dataRequest.photoBase64,
   };
 
   const response: HttpResponse = await postRequest(options, dataAPI);
+  console.log(9999, response?.data);
   return response?.data;
 };
 
@@ -93,4 +95,26 @@ export const deleteEvent = async (
 
   const response: HttpResponse = await deleteRequest(options, dataAPI);
   return response?.data;
+};
+
+export const getEventPhoto = async ({
+  eventoId,
+}: {
+  eventoId: string;
+}): Promise<string | undefined> => {
+  const envs = await envConfig();
+  const options: HttpOptions = {
+    path: `${envs.API_URL}/evento/foto`,
+  };
+
+  const params = {
+    ...(eventoId ? {eventoId} : {}),
+  };
+
+  const response: HttpResponse = await getRequest(options, params);
+  if (response.err) {
+    return undefined;
+  }
+  const data = response.data;
+  return data || [];
 };

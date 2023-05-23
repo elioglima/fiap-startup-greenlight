@@ -5,7 +5,7 @@ export type TListEventAPIResponse = {
   local?: string;
   data?: string;
   tempo?: string;
-  fotoB64?: string;
+  fotoBase64?: string;
   usuario?: {
     _id: string;
     nome: string;

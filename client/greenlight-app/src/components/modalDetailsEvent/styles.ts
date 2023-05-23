@@ -43,11 +43,11 @@ export const Title = styled.Text`
 
 export const Header = styled.View`
   display: flex;
-  width: 90%;
+  width: 85%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 18px;
+  margin: 10px 20px;
 `;
 
 export const Map = styled.View`
@@ -107,14 +107,23 @@ export const ImageTitle = styled.Text`
 
 export const Maps = styled.View`
   display: flex;
-  width: 95%;
-  margin: 0 10px;
+  width: 88%;
+  margin: 0 20px;
 `;
 
 export const Buttons = styled.View`
   display: flex;
   width: 94%;
-  margin: 10px 10px 50px 10px;
+  margin: 20px 10px 50px 10px;
   flex-direction: row;
   justify-content: space-between;
+`;
+
+export const ImageDefault = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
 `;

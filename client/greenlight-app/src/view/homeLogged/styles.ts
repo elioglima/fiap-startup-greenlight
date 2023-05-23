@@ -12,6 +12,12 @@ export const Content = styled.View`
   margin: 0 10px;
 `;
 
+export const MapScreen = styled.View`
+  display: flex;
+  flex-direction: column;
+  margin: 10px 8px 5px 8px;
+`;
+
 export const Box = styled.View`
   display: flex;
   flex-direction: column;

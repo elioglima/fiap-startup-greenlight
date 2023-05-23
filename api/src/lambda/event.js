@@ -1,8 +1,15 @@
-const { find, insert, update, remove } = require('../services/event')
+const {
+  find,
+  findCount,
+  insert,
+  update,
+  remove,
+} = require("../services/event");
 
 module.exports = {
-    find, 
-    insert, 
-    update, 
-    remove
-}
+  find,
+  findCount,
+  insert,
+  update,
+  remove,
+};

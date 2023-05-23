@@ -28,6 +28,16 @@ const find = async (collection, query, sort = {}, limit = 100) => {
   }
 };
 
+const count = async (collection, query, sort = {}, limit = 100) => {
+  try {
+    const response = await collection.find(query || {}).count();
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const findOne = async (collection, query, sort = {}) => {
   try {
     const response = await find(collection, query, sort, 1);
@@ -45,5 +55,6 @@ const findOne = async (collection, query, sort = {}) => {
 module.exports = {
   callBack,
   find,
+  count,
   findOne,
 };

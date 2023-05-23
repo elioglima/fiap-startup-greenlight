@@ -13,6 +13,7 @@ interface propState {
   control: any;
   formState: any;
   secureTextEntry?: boolean;
+  onKeyPress?: (e: any) => void;
 }
 
 export const InputDefault = (props: propState) => {
@@ -27,6 +28,7 @@ export const InputDefault = (props: propState) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <St.Input
+            onKeyPress={() => props.onKeyPress && props.onKeyPress(value)}
             secureTextEntry={props.secureTextEntry || false}
             placeholder={props.placeholder || ''}
             onBlur={onBlur}

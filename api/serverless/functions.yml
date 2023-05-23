@@ -24,14 +24,14 @@ insertUser:
   events:
     - http:
         path: /usuario
-        method: PUT
+        method: POST
 
 updateUser:
   handler: src/lambda/user.update
   events:
     - http:
         path: /usuario
-        method: POST
+        method: PUT
 
 removeUser:
   handler: src/lambda/user.remove
@@ -47,19 +47,26 @@ findEvent:
         path: /evento
         method: GET
 
+findCountEvent:
+  handler: src/lambda/event.findCount
+  events:
+    - http:
+        path: /evento/contagem
+        method: GET
+
 insertEvent:
   handler: src/lambda/event.insert
   events:
     - http:
         path: /evento
-        method: PUT
+        method: POST
 
 updateEvent:
   handler: src/lambda/event.update
   events:
     - http:
         path: /evento
-        method: POST
+        method: PUT
 
 removeEvent:
   handler: src/lambda/event.remove
@@ -80,14 +87,14 @@ insertEventParticipant:
   events:
     - http:
         path: /evento/participante
-        method: PUT
+        method: POST
 
 updateEventParticipant:
   handler: src/lambda/eventParticipant.update
   events:
     - http:
         path: /evento/participante
-        method: POST
+        method: PUT
 
 removeEventParticipant:
   handler: src/lambda/eventParticipant.remove
@@ -95,6 +102,34 @@ removeEventParticipant:
     - http:
         path: /evento/participante
         method: DELETE
+
+findEventPhoto:
+  handler: src/lambda/eventPhoto.findOne
+  events:
+    - http:
+        path: /evento/foto
+        method: GET
+
+insertEventPhoto:
+  handler: src/lambda/eventPhoto.insert
+  events:
+    - http:
+        path: /evento/foto
+        method: POST
+
+updateEventPhoto:
+  handler: src/lambda/eventPhoto.update
+  events:
+    - http:
+        path: /evento/foto
+        method: PUT
+
+removeEventPhoto:
+  handler: src/lambda/eventPhoto.remove
+  events:
+    - http:
+        path: /evento/foto
+        method: DELETE        
 
 findCategory:
   handler: src/lambda/category.find

@@ -74,7 +74,8 @@ function* eventListSagas(dataStore: TStoreEventListState): Generator<any> {
           title: d.titulo,
           date: d.data,
           timeStart: d.tempo,
-          photoDataBase64: d.fotoB64,
+          photoBase64: d.fotoBase64,
+          local: d.local,
           category: {
             id: d.categoria?._id,
             description: d.categoria?.titulo,

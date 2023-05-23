@@ -4,6 +4,7 @@ import {persistReducer, persistStore} from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import {all, takeEvery} from 'redux-saga/effects';
 
+import {configsRootReducers} from '@stores/store.configs';
 import {eventAddRootReducers, eventAddRootSagas} from '../stores/event/store.event.add';
 import {
   eventListCountRootReducers,
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   ...eventDeleteRootReducers,
   ...modalLoadingRootReducers,
   ...eventListCountRootReducers,
+  ...configsRootReducers,
 });
 
 const persistConfig = {

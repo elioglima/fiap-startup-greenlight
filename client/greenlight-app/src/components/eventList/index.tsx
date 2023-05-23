@@ -3,6 +3,7 @@ import {FlatList, TouchableOpacity} from 'react-native';
 
 import moment from 'moment';
 
+import {ImageDefault} from '@components/imageDefault';
 import IconAddSVG from '@components/svg/IconAddSVG';
 import {IconSmallCalendarSVG} from '@components/svg/IconSmallCalendarSVG';
 import {IconSmallTimeSVG} from '@components/svg/IconSmallTimeSVG';
@@ -27,7 +28,7 @@ export const EventList: React.FC<PropStateEventList> = ({items, onPressEdit, set
         <TouchableOpacity onPress={() => onPressEdit && onPressEdit(item)}>
           <St.BaseRow>
             <St.ColPhoto>
-              <St.Logo />
+              <ImageDefault name="photoBase64" value={item?.photoBase64} />
             </St.ColPhoto>
             <St.ColTitle>
               <St.Title>{item.category.description}</St.Title>

@@ -145,6 +145,7 @@ export type TStoreEventAddRequest = {
   time: string;
   location: string;
   isLoadevents?: boolean;
+  photoBase64: string;
 };
 
 export type TStoreEventAddResponse = {
