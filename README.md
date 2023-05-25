@@ -3,7 +3,7 @@ Greenlight
 <img width="1662" alt="image" src="https://github.com/elioglima/fiap-startup-greenlight/assets/6618004/9b056204-add3-48f3-97cf-a5b012316b80">
 <img width="1660" alt="image" src="https://github.com/elioglima/fiap-startup-greenlight/assets/6618004/6e65a376-9a18-4f19-8703-75b2bec0f8c6">
 <img width="1663" alt="image" src="https://github.com/elioglima/fiap-startup-greenlight/assets/6618004/8a95c9bf-044f-4780-b3f8-87f9caa0bfc7">
-<img width="1662" alt="image" src="https://github.com/elioglima/fiap-startup-greenlight/assets/6618004/ab6a4117-2bcb-42a5-8c55-e8433bd278e5">
+<img width="1667" alt="image" src="https://github.com/elioglima/fiap-startup-greenlight/assets/6618004/bd88b31f-4b72-42a6-a2db-faf5d00b7944">
 <img width="1662" alt="image" src="https://github.com/elioglima/fiap-startup-greenlight/assets/6618004/ef52baa6-a695-4842-a2a3-97c1b37206ab">
 <img width="1663" alt="image" src="https://github.com/elioglima/fiap-startup-greenlight/assets/6618004/0025506f-c425-4a23-b71c-0f7c6870047f">
 <img width="1663" alt="image" src="https://github.com/elioglima/fiap-startup-greenlight/assets/6618004/21b13b4b-6449-4bc7-9c24-6f183dce7808">
