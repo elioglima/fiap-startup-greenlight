@@ -76,7 +76,6 @@ export const addEvent = async (
   };
 
   const response: HttpResponse = await postRequest(options, dataAPI);
-  console.log(9999, response?.data);
   return response?.data;
 };
 

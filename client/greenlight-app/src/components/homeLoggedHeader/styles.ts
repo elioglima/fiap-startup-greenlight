@@ -32,3 +32,14 @@ export const h2 = styled.Text`
 export const h5 = styled.Text`
   font-size: 20px;
 `;
+
+export const BaseLogout = styled.View`
+  display: flex;
+  position: absolute;
+  bottom: -20px;
+`;
+
+export const TextLogout = styled.Text`
+  font-size: 15px;
+  color: red;
+`;

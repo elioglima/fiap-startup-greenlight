@@ -17,6 +17,62 @@ export type TStoreCategoryState = {
   response?: TStoreCategoryResponse;
 };
 
+/* STATE PROFILE */
+
+const storeProfile = 'API-EVENT-LIST';
+
+export type TStoreProfileRequest = {
+  photoBase64: string;
+  usuarioId: string;
+};
+
+export type TStoreProfileResponse = {};
+
+export enum EStoreActionTypeProfile {
+  upload = `${storeProfile}_UPLOAD`,
+  success = `${storeProfile}_SUCCESS`,
+  error = `${storeProfile}_ERROR`,
+}
+
+export type TStoreProfileState =
+  | {
+      type: EStoreActionTypeProfile.upload;
+      request?: TStoreProfileRequest;
+      response?: TStoreProfileResponse;
+
+      loading: boolean;
+      loaded: boolean;
+      message?: string;
+      error: boolean;
+    }
+  | {
+      type: EStoreActionTypeProfile.success;
+      request?: TStoreProfileRequest;
+      response?: TStoreProfileResponse;
+
+      loading: boolean;
+      loaded: boolean;
+      message?: string;
+      error: boolean;
+    }
+  | {
+      type: EStoreActionTypeProfile.error;
+      request?: TStoreProfileRequest;
+      response?: TStoreProfileResponse;
+
+      loading: boolean;
+      loaded: boolean;
+      message?: string;
+      error: boolean;
+    };
+
+export const profileStateInitial: TStoreProfileState = {
+  type: EStoreActionTypeProfile.success,
+  loading: false,
+  loaded: false,
+  error: false,
+};
+
 /* STATE LIST EVENT */
 
 const storeEventList = 'API-EVENT-LIST';

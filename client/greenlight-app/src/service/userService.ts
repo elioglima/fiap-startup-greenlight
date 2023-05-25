@@ -1,9 +1,10 @@
 import {envConfig} from '@configs/envConfig';
+import {TAPILoginRequest} from '@domain/types/TAPILogin';
 import {HttpOptions, HttpResponse} from '@domain/types/THttp';
-import {TLoginRequest} from '@domain/types/TLogin';
+import {TStoreProfileResponse} from '@domain/types/TStates';
 import {postRequest, putRequest} from '@utils/service.https';
 
-export const login = async (request: TLoginRequest) => {
+export const login = async (request: TAPILoginRequest) => {
   const envs = await envConfig();
   const options: HttpOptions = {
     path: `${envs.API_URL}/usuario/acesso`,
@@ -29,4 +30,16 @@ export const loginRefresh = async (request: {token: string; refreshKey: string})
   }
 
   return response.data?.data;
+};
+
+export const profileUpload = async (request: {
+  photoBase64: string;
+  usuarioId: string;
+}): Promise<TStoreProfileResponse> => {
+  const envs = await envConfig();
+  const options: HttpOptions = {
+    path: `${envs.API_URL}/usuario/foto?id=${request.usuarioId}`,
+  };
+  const response: HttpResponse = await putRequest(options, {fotoBase64: request.photoBase64});
+  return response.data as TStoreProfileResponse;
 };

@@ -26,7 +26,6 @@ const MapScreen = ({enabled = false, ...props}: IPropState) => {
   });
 
   useEffect(() => {
-    console.log(1234, props.region);
     if (!props.region?.latitude || !props.region?.longitude) {
       return;
     }

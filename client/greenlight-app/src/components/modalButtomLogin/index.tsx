@@ -23,11 +23,10 @@ export const ModalButtomLogin = (props: propState) => {
   const onSubmitRegisterForm = async (data: any) => {
     const dataSend = {
       rememberLogin: data.rememberLogin.toString(),
-      email: data.email,
-      senha: data.senha,
+      mail: data.mail,
+      password: data.password,
     };
 
-    console.log(dataSend);
     dispath(ActionLogin(dataSend));
   };
 

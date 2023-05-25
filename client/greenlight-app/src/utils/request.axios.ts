@@ -56,7 +56,6 @@ export default async (options: HttpOptions, data?: any): Promise<HttpResponse> =
       data: response.data,
     };
   } catch (error: any) {
-    // console.log('error', error.response);
     let message: any = error?.response?.statusText || error?.response?.data || 'unexpected error';
     if (Array.isArray(error?.response?.data)) {
       message = error?.response?.data[0];

@@ -9,6 +9,7 @@ const parseValues = (values) => {
     ...(values.senha ? { senha: values.senha } : {}),
     ...(values.data ? { data: values.data } : {}),
     ...(values.token ? { token: values.token } : {}),
+    ...(values.fotoBase64 ? { fotoBase64: values.fotoBase64 } : {}),
   };
 };
 

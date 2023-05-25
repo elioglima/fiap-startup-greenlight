@@ -19,7 +19,15 @@ export type TListEventAPIResponse = {
     titulo: string;
     data: string;
   };
-  participantes?: any[];
+  participantes?: {
+    _id: string;
+    usuarioId: string;
+    descricao: string;
+    data: Date;
+    nome: string;
+    email: string;
+    fotoBase64: string;
+  }[];
 };
 
 export type TListEventCountAPIResponse = {

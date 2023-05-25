@@ -169,7 +169,6 @@ export const ModalAddEvent = ({open, onClose}: props) => {
                 formState={formState}
                 onKeyPress={(data: any) => {
                   getCoordinatesFromAddress(data);
-                  console.log('formState', data);
                 }}
               />
             </St.FormInput>

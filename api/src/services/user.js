@@ -226,6 +226,33 @@ const refresh = async ({ body }) => {
     return utils.httpHelper.badRequest(error);
   }
 };
+
+const updatePhoto = async ({ queryStringParameters, body }) => {
+  try {
+    const params = queryStringParameters;
+    if (!params?.id) {
+      return utils.httpHelper.notAuthorized();
+    }
+    const filter = { _id: params?.id };
+
+    const checkUserExists = await db.user.findOne(filter);
+
+    if (!checkUserExists || !checkUserExists.length) {
+      return utils.httpHelper.notAuthorized();
+    }
+
+    const bodyParse = JSON.parse(body);
+    const value = {
+      fotoBase64: bodyParse.fotoBase64,
+    };
+
+    const response = await db.user.update(filter, value);
+    return utils.httpHelper.ok(response);
+  } catch (error) {
+    return utils.httpHelper.badRequest(error);
+  }
+};
+
 module.exports = {
   find,
   insert,
@@ -233,4 +260,5 @@ module.exports = {
   remove,
   login,
   refresh,
+  updatePhoto,
 };

@@ -27,7 +27,7 @@ export const SwitchDefault = (props: propState) => {
           }
         }
         render={({field: {onChange, value}}) => (
-          <St.Switch value={value} onValueChange={onChange} />
+          <St.Switch value={value === true} onValueChange={onChange} />
         )}
         name={props.name}
       />

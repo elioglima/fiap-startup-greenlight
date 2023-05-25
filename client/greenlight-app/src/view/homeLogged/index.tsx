@@ -12,11 +12,13 @@ import {IconCalendarSVG} from '@components/svg/IconCalendarSVG';
 import {TMenuItem} from '@domain/types/TMenuItem';
 import {TStoreEventListCountState} from '@domain/types/TStates';
 import {TStoreConfigsState} from '@domain/types/states/TStatesConfigs';
+import {TStoreLoginState} from '@domain/types/states/TStatesLogin';
 import {ActionEventListCount} from '@stores/event/store.event.count';
 import {ActionEventList} from '@stores/event/store.event.list';
-import {ActionLoginRefresh} from '@stores/login/store.login';
 import {ActionCategory} from '@stores/store.service.category';
 import {useDispatch, useSelector} from 'react-redux';
+
+import {ActionLoginRefresh} from '@stores/login/store.login';
 import * as St from './styles';
 
 const HomeView = () => {
@@ -25,11 +27,29 @@ const HomeView = () => {
 
   const dispath = useDispatch();
   const category = useSelector((state: TAppState) => state.category);
-  const stateLogin = useSelector((state: TAppState) => state.login);
+  const stateLogin: TStoreLoginState = useSelector((state: TAppState) => state.login);
   const stateConfigs: TStoreConfigsState = useSelector((state: TAppState) => state.configs);
   const eventListCount: TStoreEventListCountState = useSelector(
     (state: TAppState) => state.eventListCount,
   );
+
+  useEffect(() => {
+    dispath(
+      ActionLoginRefresh({
+        routeCurrent: '/HomeLogged',
+        routeRedirect: '/HomeStart',
+        user: stateLogin.response?.user,
+      }),
+    );
+
+    dispath(ActionCategory());
+
+    dispath(
+      ActionEventListCount({
+        usuarioId: stateLogin.response?.user?._id || '-1',
+      }),
+    );
+  }, []);
 
   useEffect(() => {
     if (!category.loaded || category.loading) {
@@ -39,18 +59,6 @@ const HomeView = () => {
     const list: TMenuItem[] = category.response?.rows || [];
     setListDataCategory(list);
   }, [category]);
-
-  useEffect(() => {
-    dispath(
-      ActionLoginRefresh({routeRedirect: '/HomeStart', user: stateLogin.response?.user || {}}),
-    );
-    dispath(ActionCategory());
-    dispath(
-      ActionEventListCount({
-        usuarioId: stateLogin.response?.user?._id || '-1',
-      }),
-    );
-  }, []);
 
   return (
     <ControllerApp>

@@ -5,6 +5,7 @@ const {
   update,
   remove,
   refresh,
+  updatePhoto,
 } = require("../services/user");
 
 module.exports = {
@@ -14,4 +15,5 @@ module.exports = {
   insert,
   update,
   remove,
+  updatePhoto,
 };

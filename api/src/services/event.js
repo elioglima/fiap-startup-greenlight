@@ -30,11 +30,12 @@ const find = async ({ queryStringParameters }) => {
             if (ev?.eventoId) delete ev.eventoId;
             if (userData?.data?._id) delete userData.data._id;
 
+            const userResp = userData?.data;
+            delete userResp.senha;
+            delete userResp.token;
             return {
               ...(ev ? ev : {}),
-              ...(userData?.data?.nome
-                ? userData.data
-                : { userNotFound: true }),
+              ...(userResp?.nome ? userResp : { userNotFound: true }),
             };
           })
         );

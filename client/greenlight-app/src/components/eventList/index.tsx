@@ -7,8 +7,11 @@ import {ImageDefault} from '@components/imageDefault';
 import IconAddSVG from '@components/svg/IconAddSVG';
 import {IconSmallCalendarSVG} from '@components/svg/IconSmallCalendarSVG';
 import {IconSmallTimeSVG} from '@components/svg/IconSmallTimeSVG';
+import {ETypeImage} from '@domain/enum/ETypeImage';
 import {IOnPressEdit} from '@domain/interfaces/IOnPressEdit';
-import {TListItems} from '@domain/types/TListItems';
+import {TListItems, TListItemsParticipants} from '@domain/types/TListItems';
+import {showModalParticipants} from '@stores/store.modals';
+import {useDispatch} from 'react-redux';
 import * as St from './styles';
 
 interface functionBoolean {
@@ -22,6 +25,8 @@ interface PropStateEventList {
 }
 
 export const EventList: React.FC<PropStateEventList> = ({items, onPressEdit, setOpenAddItem}) => {
+  const dispath = useDispatch();
+
   const renderItem = ({item}: {item: TListItems}) => {
     return (
       <St.Base>
@@ -41,16 +46,23 @@ export const EventList: React.FC<PropStateEventList> = ({items, onPressEdit, set
               </St.Row>
               <St.RowButtom>
                 <St.Col>
-                  <St.Image source={require('../../assets/png/photo1.png')} />
-                  <St.Image source={require('../../assets/png/photo2.png')} />
-                  <St.Image source={require('../../assets/png/photo3.png')} />
-                  <St.Image source={require('../../assets/png/photo4.png')} />
-                  <St.ImageTitle>+5</St.ImageTitle>
+                  {item.participants.slice(0, 5).map((participant: TListItemsParticipants, key) => (
+                    <ImageDefault
+                      key={`ImageDefault${key}`}
+                      name="photoBase64"
+                      value={participant.photoBase64}
+                      typeImage={ETypeImage.small}
+                    />
+                  ))}
+
+                  <St.ImageTitle>
+                    {item.participants.length > 5 ? item.participants.length - 5 : ''}
+                  </St.ImageTitle>
                 </St.Col>
                 <St.Col>
                   <TouchableOpacity
                     onPress={() => {
-                      setOpenAddItem(true);
+                      dispath(showModalParticipants(item));
                     }}>
                     <IconAddSVG />
                   </TouchableOpacity>
@@ -66,11 +78,11 @@ export const EventList: React.FC<PropStateEventList> = ({items, onPressEdit, set
   return (
     <St.Container>
       <FlatList
+        keyExtractor={item => item.id.toString()}
         data={items}
         renderItem={renderItem}
         horizontal={false}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item.id}
       />
     </St.Container>
   );

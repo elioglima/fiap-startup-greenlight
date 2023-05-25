@@ -25,7 +25,6 @@ const EventView = () => {
       return;
     }
 
-    console.log(stateEventList.response?.rows);
     const list: TListItems[] = stateEventList.response?.rows || [];
     setListData(list);
   }, [stateEventList]);

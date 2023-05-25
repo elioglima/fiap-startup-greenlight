@@ -18,12 +18,13 @@ export const LabelBase = styled.View`
   flex-direction: row;
   position: absolute;
   top: -5px;
-  left: -30px;
+  left: -28px;
   z-index: 100;
 `;
 
 export const Label = styled.Text`
   display: flex;
+  font-size: 12px;
 `;
 
 export const InputBase = styled.Text`

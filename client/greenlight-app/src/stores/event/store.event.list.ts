@@ -80,6 +80,15 @@ function* eventListSagas(dataStore: TStoreEventListState): Generator<any> {
             id: d.categoria?._id,
             description: d.categoria?.titulo,
           },
+          participants: d?.participantes?.map(p => ({
+            _id: p._id,
+            usuarioId: p.usuarioId,
+            description: p.descricao,
+            date: p.data,
+            name: p.nome,
+            mail: p.email,
+            photoBase64: p.fotoBase64,
+          })),
         }))
       : [];
 

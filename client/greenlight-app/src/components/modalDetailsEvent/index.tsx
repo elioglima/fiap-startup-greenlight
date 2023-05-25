@@ -9,7 +9,8 @@ import {IconSmallCalendarSVG} from '@components/svg/IconSmallCalendarSVG';
 import {IconSmallTimeSVG} from '@components/svg/IconSmallTimeSVG';
 import IconTaskEditItemsSVG from '@components/svg/IconTaskEditItemsSVG';
 import {EColors} from '@domain/enum/EColors';
-import {TListItems} from '@domain/types/TListItems';
+import {ETypeImage} from '@domain/enum/ETypeImage';
+import {TListItems, TListItemsParticipants} from '@domain/types/TListItems';
 import {ActionEventDelete} from '@stores/event/store.event.delete';
 import {showModaLoading} from '@stores/modals/store.modal.loading';
 import * as Location from 'expo-location';
@@ -71,7 +72,6 @@ export const ModalDetailsEvent = ({open, onClose, item, setOpenAddItem}: props) 
     getCoordinatesFromAddress(item?.local || '');
   }, [item]);
 
-  console.log(111, item);
   if (!open && !item) {
     return <></>;
   }
@@ -124,10 +124,17 @@ export const ModalDetailsEvent = ({open, onClose, item, setOpenAddItem}: props) 
             <St.TitleTimeStart>{item?.timeStart}</St.TitleTimeStart>
           </St.Col>
           <St.Col>
-            <St.Image source={require('../../assets/png/photo1.png')} />
-            <St.Image source={require('../../assets/png/photo3.png')} />
-            <St.Image source={require('../../assets/png/photo4.png')} />
-            <St.ImageTitle>+5</St.ImageTitle>
+            {item?.participants.map((participant: TListItemsParticipants, key) => (
+              <ImageDefault
+                key={`ImageDefault${key}`}
+                name="photoBase64"
+                value={participant.photoBase64}
+                typeImage={ETypeImage.small}
+              />
+            ))}
+            <St.ImageTitle>
+              {item && item.participants.length > 5 ? item.participants.length - 5 : ''}
+            </St.ImageTitle>
           </St.Col>
         </St.Header>
         <St.Maps>

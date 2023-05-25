@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 
+import {TAppState} from '@app/store';
 import {ButtomGo} from '@components/buttomGo';
 import {InputDefault} from '@components/inputDefault';
 import {SwitchDefault} from '@components/switchDefault';
+import {TStoreLoginState} from '@domain/types/states/TStatesLogin';
+import {useSelector} from 'react-redux';
 import * as St from './styles';
 
 interface propState {
@@ -14,19 +17,24 @@ interface propState {
 
 export const FormLocal = (props: propState) => {
   const {show, onSubmit} = props;
+  const loginSate: TStoreLoginState = useSelector((state: TAppState) => state.login || {});
+
   const {control, formState, handleSubmit, setValue} = useForm({
     defaultValues: {
-      email: 'elio.designer@hotmail.com',
-      senha: 'Ab@102030',
+      mail: '',
+      password: '',
       rememberLogin: true,
     },
   });
 
-  // useEffect(() => {
-  //   setValue('email', navigation.state.params?.rememberEmail);
-  //   setValue('senha', navigation.state.params?.rememberSenha);
-  //   setValue('rememberLogin', Boolean(navigation.state.params?.rememberLogin));
-  // }, [navigation.state.params, setValue]);
+  useEffect(() => {
+    console.log(loginSate.remember);
+    if (loginSate.remember) {
+      setValue('mail', loginSate.remember?.mail || '');
+      setValue('password', loginSate.remember?.password || '');
+      setValue('rememberLogin', Boolean(loginSate.remember?.rememberLogin));
+    }
+  }, [loginSate, setValue]);
 
   if (!show) {
     return <></>;
@@ -45,7 +53,8 @@ export const FormLocal = (props: propState) => {
         <St.Forms>
           <St.FormRow>
             <InputDefault
-              name={'email'}
+              isLowerCase={true}
+              name={'mail'}
               placeholder={'informe o email'}
               control={control}
               formState={formState}
@@ -53,7 +62,7 @@ export const FormLocal = (props: propState) => {
           </St.FormRow>
           <St.FormRow>
             <InputDefault
-              name={'senha'}
+              name={'password'}
               secureTextEntry={true}
               placeholder={'informe a senha'}
               control={control}

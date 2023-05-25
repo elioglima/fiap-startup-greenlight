@@ -9,11 +9,14 @@ import {clearHistory} from '@stores/store.history';
 import * as Location from 'expo-location';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-native';
+
+import {ModalListParticipant} from '@components/modalListParticipant';
 import * as St from './styles';
 
 export default ({children}: any) => {
   const dispatch = useDispatch();
   const history = useHistory();
+
   const stateHitory: THistory = useSelector((state: TAppState) => state.history?.data);
 
   async function getLocationPermission() {
@@ -57,6 +60,7 @@ export default ({children}: any) => {
     <St.Container>
       {children && children}
       <ModalLoading />
+      <ModalListParticipant />
     </St.Container>
   );
 };

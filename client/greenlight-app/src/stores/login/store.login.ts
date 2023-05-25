@@ -1,109 +1,124 @@
-import {TLoginRequest, TLoginResponse, TLoginState, TLoginUser} from '@domain/types/TLogin';
+import {TAPILoginRequest} from '@domain/types/TAPILogin';
+import {TLoginRemember, TLoginUser} from '@domain/types/TLogin';
+import {
+  EStoreActionTypeLogin,
+  TStoreLoginRequest,
+  TStoreLoginResponse,
+  TStoreLoginState,
+  initialLoginState,
+} from '@domain/types/states/TStatesLogin';
 import * as userService from '@service/userService';
 import {pushHistory} from '@stores/store.history';
 import {call, put} from 'redux-saga/effects';
 
-const name = 'ACCESS';
-
-export enum EActionTypeLogin {
-  login = `${name}_LOGIN`,
-  refresh = `${name}_REFRESH`,
-  logout = `${name}_LOGOUT`,
-  success = `${name}_SUCCESS`,
-  error = `${name}_ERROR`,
-}
-
-type Action =
-  | {type: EActionTypeLogin.login; data?: TLoginState}
-  | {type: EActionTypeLogin.logout; data?: TLoginState}
-  | {type: EActionTypeLogin.refresh; data?: TLoginState}
-  | {type: EActionTypeLogin.success; data: TLoginState}
-  | {type: EActionTypeLogin.error; data: TLoginState};
-
-export const ActionLogin = (request: TLoginRequest) => ({
-  type: EActionTypeLogin.login,
-  data: {
-    request,
-  },
+export const ActionLogin = (request: TStoreLoginRequest) => ({
+  type: EStoreActionTypeLogin.login,
+  request,
 });
 
 export const ActionLogout = () => ({
-  type: EActionTypeLogin.logout,
+  type: EStoreActionTypeLogin.logout,
 });
 
 export const ActionLoginRefresh = ({
+  routeCurrent,
   routeRedirect,
   user,
 }: {
+  routeCurrent: string;
   routeRedirect?: string;
-  user: TLoginUser;
+  user?: TLoginUser;
 }) => ({
-  type: EActionTypeLogin.refresh,
-  data: {
-    routeRedirect,
-    userTemp: user,
-  },
+  type: EStoreActionTypeLogin.refresh,
+  routeCurrent,
+  routeRedirect,
+  userTemp: user,
 });
 
-export const ActionSuccess = (response: TLoginResponse) => ({
-  type: EActionTypeLogin.success,
-  data: {
-    response,
-  },
+export const ActionCheckout = ({
+  routeCurrent,
+  routeRedirect,
+  user,
+  remember,
+}: {
+  routeCurrent: string;
+  routeRedirect?: string;
+  user?: TLoginUser;
+  remember?: TLoginRemember;
+}) => ({
+  type: EStoreActionTypeLogin.checkout,
+  routeCurrent,
+  routeRedirect,
+  userTemp: user,
+  remember: remember,
 });
 
-export const ActionError = (message: string, response: TLoginResponse) => ({
-  type: EActionTypeLogin.error,
-  data: {
-    response,
-    message,
-  },
+export const ActionSuccess = (response: TStoreLoginResponse) => ({
+  type: EStoreActionTypeLogin.success,
+  response,
 });
 
-const initialState: TLoginState = {
-  logged: false,
-  message: undefined,
-  error: false,
-};
+export const ActionError = (message: string, response: TStoreLoginResponse) => ({
+  type: EStoreActionTypeLogin.error,
+  response,
+  message,
+});
 
-const reduceLogin = (state = initialState, payload: Action) => {
+const reduceLogin = (state = initialLoginState, payload: TStoreLoginState) => {
   switch (payload.type) {
-    case EActionTypeLogin.login:
+    case EStoreActionTypeLogin.login:
       return {
         ...state,
         logged: false,
-        request: payload.data?.request,
+        request: payload.request,
         response: undefined,
         routeRedirect: undefined,
+        routeCurrent: undefined,
+        remember: payload.request,
       };
-    case EActionTypeLogin.logout:
+    case EStoreActionTypeLogin.logout:
       return {
         ...state,
+        logged: false,
         request: undefined,
         response: undefined,
         routeRedirect: undefined,
+        routeCurrent: undefined,
+        remember: {
+          ...state?.remember,
+          rememberLogin: false,
+        },
+        error: false,
       };
-    case EActionTypeLogin.refresh:
+    case EStoreActionTypeLogin.refresh:
       return {
         ...state,
-        routeRedirect: payload.data?.routeRedirect,
-        userTemp: payload.data?.userTemp,
+        routeRedirect: payload.routeRedirect,
+        routeCurrent: payload.routeCurrent,
+        userTemp: payload.userTemp,
       };
-    case EActionTypeLogin.success:
+    case EStoreActionTypeLogin.checkout:
       return {
         ...state,
-        response: payload.data?.response,
+        routeRedirect: payload.routeRedirect,
+        routeCurrent: payload.routeCurrent,
+        userTemp: payload.userTemp,
+      };
+    case EStoreActionTypeLogin.success:
+      return {
+        ...state,
+        response: payload.response,
         message: 'success',
         logged: true,
         routeRedirect: undefined,
       };
 
-    case EActionTypeLogin.error:
+    case EStoreActionTypeLogin.error:
       return {
         ...state,
-        response: payload.data?.response,
-        message: payload.data?.message,
-        routeRedirect: payload.data?.routeRedirect,
+        response: payload.response,
+        message: payload.message,
+        routeRedirect: payload.routeRedirect,
         logged: false,
         error: true,
       };
@@ -113,16 +128,32 @@ const reduceLogin = (state = initialState, payload: Action) => {
   }
 };
 
-function* loginSagas(dataStore: Action): Generator<any> {
-  const request: TLoginRequest | undefined = dataStore.data?.request;
+function* loginSagas(dataStore: TStoreLoginState): Generator<any> {
+  const request: any = dataStore.request;
   if (!request) {
     return;
   }
 
   try {
-    const response: any = yield call(userService.login, request);
+    const dataRequest: TAPILoginRequest = {
+      rememberLogin: request.rememberLogin,
+      email: request.mail.toString().toLowerCase(),
+      senha: request.password,
+    };
+
+    const response: any = yield call(userService.login, dataRequest);
+
     if (response) {
-      yield put(ActionSuccess({user: response, ...request}));
+      const user = {
+        _id: response?._id,
+        date: response?.data,
+        mail: response?.email,
+        name: response?.nome,
+        photoBase64: response?.fotoBase64,
+        token: response?.token,
+        refreshKey: response?.refreshKey,
+      };
+      yield put(ActionSuccess({user: user, ...request}));
       yield put(
         pushHistory({
           route: '/HomeLogged',
@@ -136,41 +167,41 @@ function* loginSagas(dataStore: Action): Generator<any> {
   return;
 }
 
-function* loginRefreshSagas(dataStore: Action): Generator<any> {
-  const request: TLoginRequest | undefined = dataStore.data?.request;
-  if (!dataStore.data?.userTemp?.token) {
-    yield put(
-      pushHistory({
-        route: '/HomeStart',
-        data: undefined,
-      }),
-    );
+function* loginRefreshSagas(dataStore: TStoreLoginState): Generator<any> {
+  const request: TStoreLoginRequest | undefined = dataStore.request;
 
+  if (!dataStore.userTemp?.token) {
     return;
   }
 
   const requestData: any = {
-    token: dataStore.data?.userTemp?.token,
-    refreshKey: dataStore.data?.userTemp?.refreshKey,
+    token: dataStore.userTemp?.token,
+    refreshKey: dataStore.userTemp?.refreshKey,
   };
 
   try {
     const response: any = yield call(userService.loginRefresh, requestData);
     if (response) {
-      yield put(ActionSuccess({user: response, ...request}));
-      return;
+      const user = {
+        _id: response?._id,
+        date: response?.data,
+        mail: response?.email,
+        name: response?.nome,
+        photoBase64: response?.fotoBase64,
+        token: response?.token,
+        refreshKey: response?.refreshKey,
+      };
+
+      yield put(ActionSuccess({user: user, ...request}));
     }
 
-    if (dataStore.data.routeRedirect) {
+    if (dataStore.routeRedirect) {
       yield put(
         pushHistory({
-          route: dataStore.data.routeRedirect,
+          route: '/HomeLogged',
           data: response,
         }),
       );
-
-      yield put(ActionLogout());
-      return;
     }
   } catch (error) {
     console.log(error);
@@ -178,8 +209,89 @@ function* loginRefreshSagas(dataStore: Action): Generator<any> {
   return;
 }
 
+function* checkoutSagas(dataStore: TStoreLoginState): Generator<any> {
+  const request: TStoreLoginRequest | undefined = dataStore.request;
+
+  if (!dataStore.userTemp?.token && !dataStore?.remember) {
+    return;
+  }
+
+  try {
+    if (dataStore.userTemp?.token) {
+      const requestData: any = {
+        token: dataStore.userTemp?.token,
+        refreshKey: dataStore.userTemp?.refreshKey,
+      };
+
+      const response: any = yield call(userService.loginRefresh, requestData);
+      if (response) {
+        const user = {
+          _id: response?._id,
+          date: response?.data,
+          mail: response?.email,
+          name: response?.nome,
+          photoBase64: response?.fotoBase64,
+          token: response?.token,
+          refreshKey: response?.refreshKey,
+        };
+
+        yield put(ActionSuccess({user: user, ...request}));
+        yield put(
+          pushHistory({
+            route: '/HomeLogged',
+            data: response,
+          }),
+        );
+      }
+    } else if (
+      dataStore.remember?.rememberLogin &&
+      dataStore?.remember?.mail &&
+      dataStore?.remember?.password
+    ) {
+      const dataRequest: TAPILoginRequest = {
+        rememberLogin: dataStore.remember?.rememberLogin,
+        email: dataStore?.remember?.mail,
+        senha: dataStore?.remember?.password,
+      };
+
+      const response: any = yield call(userService.login, dataRequest);
+
+      if (response) {
+        const user = {
+          _id: response?._id,
+          date: response?.data,
+          mail: response?.email,
+          name: response?.nome,
+          photoBase64: response?.fotoBase64,
+          token: response?.token,
+          refreshKey: response?.refreshKey,
+        };
+        yield put(ActionSuccess({user: user, ...request}));
+        yield put(
+          pushHistory({
+            route: '/HomeLogged',
+            data: response,
+          }),
+        );
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* logoutSagas(dataStore: TStoreLoginState): Generator<any> {
+  yield put(
+    pushHistory({
+      route: '/HomeStart',
+    }),
+  );
+}
+
 export const loginRootReducers = {login: reduceLogin};
 export const loginRootSagas = [
-  {name: EActionTypeLogin.login, data: loginSagas},
-  {name: EActionTypeLogin.refresh, data: loginRefreshSagas},
+  {name: EStoreActionTypeLogin.login, data: loginSagas},
+  {name: EStoreActionTypeLogin.refresh, data: loginRefreshSagas},
+  {name: EStoreActionTypeLogin.checkout, data: checkoutSagas},
+  {name: EStoreActionTypeLogin.logout, data: logoutSagas},
 ];

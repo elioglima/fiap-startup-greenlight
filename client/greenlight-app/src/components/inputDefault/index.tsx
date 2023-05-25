@@ -13,11 +13,13 @@ interface propState {
   control: any;
   formState: any;
   secureTextEntry?: boolean;
+  isLowerCase?: boolean;
   onKeyPress?: (e: any) => void;
 }
 
 export const InputDefault = (props: propState) => {
   const {errors} = props.formState;
+  console.log(props.isLowerCase);
 
   return (
     <St.Container>
@@ -26,16 +28,24 @@ export const InputDefault = (props: propState) => {
         rules={{
           required: true,
         }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <St.Input
-            onKeyPress={() => props.onKeyPress && props.onKeyPress(value)}
-            secureTextEntry={props.secureTextEntry || false}
-            placeholder={props.placeholder || ''}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
+        render={({field: {onChange, onBlur, value}}) => {
+          return (
+            <St.Input
+              onKeyPress={() =>
+                props.onKeyPress &&
+                props.onKeyPress(
+                  props.isLowerCase === true ? value.toString().toLowerCase() : value,
+                )
+              }
+              secureTextEntry={props.secureTextEntry || false}
+              placeholder={props.placeholder || ''}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={props.isLowerCase === true ? value.toString().toLowerCase() : value}
+              autoCapitalize="none"
+            />
+          );
+        }}
         name={props.name}
       />
       {errors[props.name] && <Text>This is required.</Text>}

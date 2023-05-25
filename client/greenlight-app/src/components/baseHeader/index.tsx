@@ -24,7 +24,6 @@ export const BaseHeader = ({backRoute, title, iconRight = <></>}: props) => {
               <TouchableOpacity
                 onPress={() => {
                   if (typeof backRoute === 'string') {
-                    console.log(backRoute);
                     dispath(
                       pushHistory({
                         route: backRoute,

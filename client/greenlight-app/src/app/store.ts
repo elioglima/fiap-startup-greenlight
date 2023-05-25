@@ -5,6 +5,8 @@ import createSagaMiddleware from 'redux-saga';
 import {all, takeEvery} from 'redux-saga/effects';
 
 import {configsRootReducers} from '@stores/store.configs';
+import {modalsRootReducers} from '@stores/store.modals';
+import {profileRootReducers, profileRootSagas} from '@stores/store.profile';
 import {eventAddRootReducers, eventAddRootSagas} from '../stores/event/store.event.add';
 import {
   eventListCountRootReducers,
@@ -25,6 +27,7 @@ export function* rootSaga() {
     ...eventAddRootSagas.map(f => takeEvery(f.name, f.data)),
     ...eventDeleteRootSagas.map(f => takeEvery(f.name, f.data)),
     ...eventListCountRootSagas.map(f => takeEvery(f.name, f.data)),
+    ...profileRootSagas.map(f => takeEvery(f.name, f.data)),
   ]);
 }
 
@@ -38,6 +41,8 @@ const rootReducer = combineReducers({
   ...modalLoadingRootReducers,
   ...eventListCountRootReducers,
   ...configsRootReducers,
+  ...profileRootReducers,
+  ...modalsRootReducers,
 });
 
 const persistConfig = {

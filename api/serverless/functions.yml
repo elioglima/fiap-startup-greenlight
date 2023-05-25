@@ -33,6 +33,13 @@ updateUser:
         path: /usuario
         method: PUT
 
+uploadPhotoUser:
+  handler: src/lambda/user.updatePhoto
+  events:
+    - http:
+        path: /usuario/foto
+        method: PUT
+
 removeUser:
   handler: src/lambda/user.remove
   events:
@@ -129,7 +136,7 @@ removeEventPhoto:
   events:
     - http:
         path: /evento/foto
-        method: DELETE        
+        method: DELETE
 
 findCategory:
   handler: src/lambda/category.find

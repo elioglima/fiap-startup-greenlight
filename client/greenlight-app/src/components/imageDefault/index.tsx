@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import {Controller} from 'react-hook-form';
 import {Image, TouchableOpacity} from 'react-native';
 
+import {ETypeImage} from '@domain/enum/ETypeImage';
 import * as St from './styles';
 
 type TValue = string | undefined;
@@ -16,10 +17,22 @@ interface propState {
   value?: TValue;
   formState?: any;
   secureTextEntry?: boolean;
-  onUpload?: (image: ImagePicker.ImagePickerAsset) => void;
+  typeImage?: ETypeImage;
+  onUpload?: ({
+    image,
+    urlBase64,
+  }: {
+    image: ImagePicker.ImagePickerAsset;
+    urlBase64: string;
+  }) => void | Function;
+  noImage?: boolean;
 }
 
-export const ImageDefault = (props: propState) => {
+export const ImageDefault = ({
+  noImage = false,
+  typeImage = ETypeImage.medium,
+  ...props
+}: propState) => {
   const [photoUri, setPhotoUri] = useState<string>();
   const [base64Data, setBase64Data] = useState<string | null>();
 
@@ -33,7 +46,30 @@ export const ImageDefault = (props: propState) => {
   };
 
   return (
-    <St.Container>
+    <St.Container
+      style={{
+        width:
+          typeImage === ETypeImage.photoParticipants
+            ? 50
+            : typeImage === ETypeImage.photo
+            ? 70
+            : typeImage === ETypeImage.small
+            ? 32
+            : typeImage === ETypeImage.medium
+            ? 95
+            : 95,
+        height:
+          typeImage === ETypeImage.photoParticipants
+            ? 50
+            : typeImage === ETypeImage.photo
+            ? 70
+            : typeImage === ETypeImage.small
+            ? 32
+            : typeImage === ETypeImage.medium
+            ? 95
+            : 95,
+        borderRadius: 200,
+      }}>
       {props.control ? (
         <>
           <Controller
@@ -68,27 +104,47 @@ export const ImageDefault = (props: propState) => {
                     },
                   );
 
-                  console.log(resizedImage);
                   setPhotoUri(resizedImage.uri);
                   setBase64Data(resizedImage.base64);
                   const fileExtension = images.fileName?.toString().split('.')[1];
-                  onChange(`data:${images.type}/${fileExtension};base64,${resizedImage.base64}`);
-                  if (!props.control) {
-                    props.onUpload && props.onUpload(images);
-                  }
+                  const urlBase64 = `data:${images.type}/${fileExtension};base64,${resizedImage.base64}`;
+                  onChange(urlBase64);
+                  props.onUpload && props.onUpload({image: resizedImage, urlBase64});
                 }
               };
 
               return (
                 <TouchableOpacity onPress={selectPhoto}>
-                  {photoUri ? (
+                  {value ? (
                     <Image
                       source={{uri: value || ''}}
-                      style={{width: 95, height: 95, borderRadius: 200}}
+                      style={{
+                        width:
+                          typeImage === ETypeImage.photoParticipants
+                            ? 50
+                            : typeImage === ETypeImage.photo
+                            ? 65
+                            : typeImage === ETypeImage.small
+                            ? 50
+                            : typeImage === ETypeImage.medium
+                            ? 95
+                            : 95,
+                        height:
+                          typeImage === ETypeImage.photoParticipants
+                            ? 50
+                            : typeImage === ETypeImage.photo
+                            ? 65
+                            : typeImage === ETypeImage.small
+                            ? 50
+                            : typeImage === ETypeImage.medium
+                            ? 95
+                            : 95,
+                        borderRadius: 200,
+                      }}
                     />
                   ) : (
                     <St.LabelBase>
-                      <St.Label>{props.placeholder || 'Selecione'}</St.Label>
+                      <St.Label>{props.placeholder || 'Selecioness'}</St.Label>
                     </St.LabelBase>
                   )}
                 </TouchableOpacity>
@@ -101,11 +157,34 @@ export const ImageDefault = (props: propState) => {
       ) : (
         <TouchableOpacity onPress={() => {}}>
           {props.value ? (
-            <Image source={{uri: props.value}} style={{width: 95, height: 95, borderRadius: 200}} />
+            <Image
+              source={{uri: props.value}}
+              style={{
+                width:
+                  typeImage === ETypeImage.photoParticipants
+                    ? 50
+                    : typeImage === ETypeImage.photo
+                    ? 65
+                    : typeImage === ETypeImage.small
+                    ? 32
+                    : typeImage === ETypeImage.medium
+                    ? 95
+                    : 95,
+                height:
+                  typeImage === ETypeImage.photoParticipants
+                    ? 50
+                    : typeImage === ETypeImage.photo
+                    ? 65
+                    : typeImage === ETypeImage.small
+                    ? 32
+                    : typeImage === ETypeImage.medium
+                    ? 95
+                    : 95,
+                borderRadius: 200,
+              }}
+            />
           ) : (
-            <St.LabelBase>
-              <St.Label>{props.placeholder || 'Selecione'}</St.Label>
-            </St.LabelBase>
+            <St.LabelBase />
           )}
         </TouchableOpacity>
       )}

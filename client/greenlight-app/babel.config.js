@@ -22,6 +22,7 @@ module.exports = function (api) {
             '@configs': './src/configs',
             '@stores': './src/stores',
             '@app': './src/app',
+            '@context': './src/context',
           },
         },
       ],
